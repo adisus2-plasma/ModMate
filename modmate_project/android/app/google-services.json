@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "181595610510",
+    "project_id": "modmate-database",
+    "storage_bucket": "modmate-database.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181595610510:android:6b990ab1b94aad1ae118df",
+        "android_client_info": {
+          "package_name": "com.example.modmate_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgd2np_LZiyqPk3qgtU7oTH3Wwxer-C2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/firestore_auth_service.dart';
 import 'forgotPass_page.dart';
 import 'register_page.dart';
 import 'home_page.dart';
@@ -13,7 +14,11 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _usernameCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
+
   bool _obscure = true;
+  bool _keepSignedIn = true;
+
+  static const _accent = Color(0xFFFF7A1A);
 
   @override
   void dispose() {
@@ -22,21 +27,42 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _login() {
+  Future<void> _login() async {
     final username = _usernameCtrl.text.trim();
-    final password = _passwordCtrl.text;
+    final pass = _passwordCtrl.text;
 
-    if (username.isEmpty || password.isEmpty) {
+    if (username.isEmpty || pass.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("กรุณากรอกชื่อผู้ใช้และรหัสผ่าน")),
+        const SnackBar(content: Text("กรุณากรอก Username และ Password")),
       );
       return;
     }
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const HomePage()),
-    );
+    try {
+      final ok = await FirestoreAuthService.instance.login(
+        username: username,
+        password: pass,
+      );
+
+      if (!mounted) return;
+
+      if (!ok) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Username หรือ Password ไม่ถูกต้อง")),
+        );
+        return;
+      }
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomePage()),
+      );
+    } catch (e) {
+      debugPrint("LOGIN ERROR: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("เข้าสู่ระบบไม่สำเร็จ ลองใหม่อีกครั้ง")),
+      );
+    }
   }
 
   void _goForgotPassword() {
@@ -59,103 +85,156 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(24, 30, 24, 24),
+          padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const SizedBox(height: 26),
+
               Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black26),
-                  borderRadius: BorderRadius.circular(8),
+                width: 80,
+                height: 80,
+                child: Image.asset(
+                'assets/logo.png',
+                fit: BoxFit.contain,
+                errorBuilder: (_, __, ___) {
+                  // fallback เผื่อยังไม่มีรูป
+                  return const Icon(Icons.fitness_center, size: 90);
+                  },
                 ),
-                alignment: Alignment.center,
-                child: const Icon(Icons.image_outlined),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               const Text(
                 "ModMate",
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
               ),
               const SizedBox(height: 6),
               const Text(
                 "เข้าสู่ระบบ",
-                style: TextStyle(fontSize: 16, color: Colors.black54),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black54),
               ),
+
               const SizedBox(height: 26),
 
-              const _FieldLabel(text: "ชื่อผู้ใช้"),
-              const SizedBox(height: 6),
-              TextField(
+              _label("ชื่อผู้ใช้"),
+              const SizedBox(height: 8),
+              _roundedField(
                 controller: _usernameCtrl,
-                textInputAction: TextInputAction.next,
-                decoration: _inputDecoration(hint: "USERNAME"),
+                hint: "USERNAME",
+                prefixIcon: Icons.person_outline,
               ),
 
-              const SizedBox(height: 14),
+              const SizedBox(height: 18),
 
-              const _FieldLabel(text: "รหัสผ่าน"),
-              const SizedBox(height: 6),
-              TextField(
+              _label("รหัสผ่าน"),
+              const SizedBox(height: 8),
+              _roundedField(
                 controller: _passwordCtrl,
+                hint: "****************",
+                prefixIcon: Icons.lock_outline,
                 obscureText: _obscure,
-                textInputAction: TextInputAction.done,
-                onSubmitted: (_) => _login(),
-                decoration: _inputDecoration(
-                  hint: "PASSWORD",
-                  suffix: IconButton(
-                    onPressed: () => setState(() => _obscure = !_obscure),
-                    icon: Icon(
-                      _obscure ? Icons.visibility_off : Icons.visibility,
-                    ),
+                suffix: IconButton(
+                  onPressed: () => setState(() => _obscure = !_obscure),
+                  icon: Icon(
+                    _obscure
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                    color: Colors.black45,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
 
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: _goForgotPassword,
-                  child: const Text("ลืมรหัสผ่าน"),
-                ),
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () => setState(() => _keepSignedIn = !_keepSignedIn),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 22,
+                          height: 22,
+                          decoration: BoxDecoration(
+                            color: _keepSignedIn ? _accent : Colors.transparent,
+                            borderRadius: BorderRadius.circular(7),
+                            border: Border.all(
+                              color: _keepSignedIn ? _accent : Colors.black26,
+                            ),
+                          ),
+                          child: _keepSignedIn
+                              ? const Icon(Icons.check,
+                                  size: 16, color: Colors.white)
+                              : null,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          "เข้าสู่ระบบไว้ต่อไป",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: _goForgotPassword,
+                    child: const Text(
+                      "ลืมรหัสผ่าน?",
+                      style: TextStyle(
+                        color: _accent,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
               ),
 
               const SizedBox(height: 8),
 
               SizedBox(
                 width: double.infinity,
-                height: 48,
-                child: OutlinedButton(
+                height: 54,
+                child: ElevatedButton(
                   onPressed: _login,
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.black45),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _accent,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  child: const Text(
-                    "เข้าสู่ระบบ",
-                    style: TextStyle(fontSize: 16, color: Colors.black87),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text("เข้าสู่ระบบ",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w800)),
+                      SizedBox(width: 10),
+                      Icon(Icons.arrow_forward, size: 20),
+                    ],
                   ),
                 ),
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 26),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("ยังไม่มีบัญชีใช่ไหม? "),
+                  const Text("ยังไม่มีบัญชีใช่ไหม? ",
+                      style: TextStyle(color: Colors.black54)),
                   GestureDetector(
                     onTap: _goRegister,
                     child: const Text(
                       "ลงทะเบียนที่นี่",
                       style: TextStyle(
+                        color: _accent,
+                        fontWeight: FontWeight.w800,
                         decoration: TextDecoration.underline,
-                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -168,28 +247,49 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  InputDecoration _inputDecoration({required String hint, Widget? suffix}) {
-    return InputDecoration(
-      hintText: hint,
-      isDense: true,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
-      suffixIcon: suffix,
-    );
-  }
-}
+  Widget _label(String t) => Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          t,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            color: Colors.black87,
+          ),
+        ),
+      );
 
-class _FieldLabel extends StatelessWidget {
-  final String text;
-  const _FieldLabel({required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 12, color: Colors.black54),
+  Widget _roundedField({
+    required TextEditingController controller,
+    required String hint,
+    required IconData prefixIcon,
+    bool obscureText = false,
+    Widget? suffix,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: const TextStyle(color: Colors.black38),
+        prefixIcon: Icon(prefixIcon, color: Colors.black45),
+        suffixIcon: suffix,
+        filled: true,
+        fillColor: const Color(0xFFF7F7F7),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Color(0xFFE6E6E6)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Color(0xFFE6E6E6)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: _accent, width: 1.2),
+        ),
       ),
     );
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/firestore_auth_service.dart';
+
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -9,146 +11,390 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _usernameCtrl = TextEditingController();
-  final _passwordCtrl = TextEditingController();
+  final _passCtrl = TextEditingController();
   final _confirmCtrl = TextEditingController();
 
-  bool _obscure1 = true;
-  bool _obscure2 = true;
+  bool _obscurePass = true;
+  bool _obscureConfirm = true;
+
+  static const _accent = Color(0xFFFF7A1A);
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameCtrl.addListener(_refresh);
+    _passCtrl.addListener(_refresh);
+    _confirmCtrl.addListener(_refresh);
+  }
+
+  void _refresh() => setState(() {});
 
   @override
   void dispose() {
     _usernameCtrl.dispose();
-    _passwordCtrl.dispose();
+    _passCtrl.dispose();
     _confirmCtrl.dispose();
     super.dispose();
   }
 
-  void _register() {
-    final u = _usernameCtrl.text.trim();
-    final p1 = _passwordCtrl.text;
-    final p2 = _confirmCtrl.text;
+  // ---- Password strength ----
+  PasswordStrength get _strength => _calcStrength(_passCtrl.text);
 
-    if (u.isEmpty || p1.isEmpty || p2.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("กรุณากรอกข้อมูลให้ครบ")),
-      );
-      return;
-    }
-    if (p1 != p2) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("รหัสผ่านไม่ตรงกัน")),
-      );
-      return;
-    }
+  PasswordStrength _calcStrength(String p) {
+    if (p.isEmpty) return PasswordStrength.none;
 
-    // TODO: ใส่ logic register จริง
-    Navigator.pop(context); // สมัครเสร็จ กลับไปหน้า login
+    int score = 0;
+    if (p.length >= 8) score++;
+    if (RegExp(r'[A-Z]').hasMatch(p)) score++;
+    if (RegExp(r'[a-z]').hasMatch(p)) score++;
+    if (RegExp(r'[0-9]').hasMatch(p)) score++;
+    if (RegExp(r'[!@#$%^&*(),.?":{}|<>_\-+=/\\[\]~`]').hasMatch(p)) score++;
+
+    // แปลงเป็น 0..4 แถบ
+    if (score <= 1) return PasswordStrength.weak;
+    if (score == 2) return PasswordStrength.fair;
+    if (score == 3) return PasswordStrength.good;
+    return PasswordStrength.amazing;
+  }
+
+  bool get _passwordsMatch =>
+      _passCtrl.text.isNotEmpty &&
+      _confirmCtrl.text.isNotEmpty &&
+      _passCtrl.text == _confirmCtrl.text;
+
+  bool get _canSubmit =>
+      _usernameCtrl.text.trim().isNotEmpty &&
+      _passwordsMatch &&
+      (_strength == PasswordStrength.good || _strength == PasswordStrength.amazing);
+
+  Future<void> _submit() async {
+    if (!_canSubmit) return;
+
+    final username = _usernameCtrl.text.trim();
+    final password = _passCtrl.text;
+
+    try {
+      await FirestoreAuthService.instance.register(
+        username: username,
+        password: password,
+      );
+
+      if (!mounted) return;
+
+      // สมัครสำเร็จ -> กลับไปหน้า login
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("สมัครสำเร็จ กรุณาเข้าสู่ระบบ")),
+      );
+      Navigator.pop(context);
+
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
+    } catch (e) {
+      // debug ดู error จริง
+      debugPrint("REGISTER ERROR: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("สมัครไม่สำเร็จ ลองใหม่อีกครั้ง")),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final strength = _strength;
+
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text("ลงทะเบียน"),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
-        child: Column(
-          children: [
-            const SizedBox(height: 8),
-            const Text("ModMate", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500)),
-            const SizedBox(height: 6),
-            const Text("ลงทะเบียน", style: TextStyle(fontSize: 16, color: Colors.black54)),
-            const SizedBox(height: 26),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 22),
 
-            _label("ชื่อผู้ใช้"),
-            const SizedBox(height: 6),
-            TextField(
-              controller: _usernameCtrl,
-              textInputAction: TextInputAction.next,
-              decoration: _inputDecoration(hint: "USERNAME"),
-            ),
-
-            const SizedBox(height: 14),
-
-            _label("รหัสผ่าน"),
-            const SizedBox(height: 6),
-            TextField(
-              controller: _passwordCtrl,
-              obscureText: _obscure1,
-              textInputAction: TextInputAction.next,
-              decoration: _inputDecoration(
-                hint: "PASSWORD",
-                suffix: IconButton(
-                  onPressed: () => setState(() => _obscure1 = !_obscure1),
-                  icon: Icon(_obscure1 ? Icons.visibility_off : Icons.visibility),
+              // โลโก้
+              Container(
+                width: 80,
+                height: 80,
+                child: Image.asset(
+                'assets/logo.png',
+                fit: BoxFit.contain,
+                errorBuilder: (_, __, ___) {
+                  // fallback เผื่อยังไม่มีรูป
+                  return const Icon(Icons.fitness_center, size: 90);
+                  },
                 ),
               ),
-            ),
 
-            const SizedBox(height: 14),
-
-            _label("ยืนยันรหัสผ่าน"),
-            const SizedBox(height: 6),
-            TextField(
-              controller: _confirmCtrl,
-              obscureText: _obscure2,
-              textInputAction: TextInputAction.done,
-              onSubmitted: (_) => _register(),
-              decoration: _inputDecoration(
-                hint: "CONFIRM PASSWORD",
-                suffix: IconButton(
-                  onPressed: () => setState(() => _obscure2 = !_obscure2),
-                  icon: Icon(_obscure2 ? Icons.visibility_off : Icons.visibility),
+              const SizedBox(height: 12),
+              const Text(
+                "ModMate",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.black87,
                 ),
               ),
-            ),
+              const SizedBox(height: 6),
+              const Text(
+                "ลงทะเบียน",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black54, fontSize: 20),
+              ),
 
-            const SizedBox(height: 24),
+              const SizedBox(height: 26),
 
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: OutlinedButton(
-                onPressed: _register,
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.black45),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
+              _label("ตั้งชื่อผู้ใช้"),
+              const SizedBox(height: 8),
+              _roundedField(
+                controller: _usernameCtrl,
+                hint: "USERNAME",
+                keyboardType: TextInputType.emailAddress,
+                prefixIcon: Icons.mail_outline,
+              ),
+
+              const SizedBox(height: 18),
+
+              // ในภาพเขียน Confirm Password แต่จริงๆ อันแรกคือ Password
+              _label("ตั้งรหัสผ่าน"),
+              const SizedBox(height: 8),
+              _roundedField(
+                controller: _passCtrl,
+                hint: "***************",
+                prefixIcon: Icons.lock_outline,
+                obscureText: _obscurePass,
+                suffix: IconButton(
+                  onPressed: () => setState(() => _obscurePass = !_obscurePass),
+                  icon: Icon(
+                    _obscurePass
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                    color: Colors.black45,
                   ),
                 ),
-                child: const Text(
-                  "ลงทะเบียน",
-                  style: TextStyle(fontSize: 16, color: Colors.black87),
+              ),
+
+              const SizedBox(height: 10),
+
+              // Strength bars + label
+              _StrengthBars(strength: strength),
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "ความปลอดภัยรหัสผ่าน: ${strength.text}",
+                  style: const TextStyle(color: Colors.black54),
                 ),
               ),
-            ),
-          ],
+
+              const SizedBox(height: 18),
+
+              _label("ยืนยันรหัสผ่าน"),
+              const SizedBox(height: 8),
+              _roundedField(
+                controller: _confirmCtrl,
+                hint: "***************",
+                prefixIcon: Icons.lock_outline,
+                obscureText: _obscureConfirm,
+                suffix: IconButton(
+                  onPressed: () =>
+                      setState(() => _obscureConfirm = !_obscureConfirm),
+                  icon: Icon(
+                    _obscureConfirm
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                    color: Colors.black45,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 22),
+
+              // Sign Up button (disabled/enabled แบบภาพ)
+              SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: ElevatedButton(
+                  onPressed: _canSubmit ? _submit : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _accent,
+                    disabledBackgroundColor: const Color(0xFFFFE6CF),
+                    foregroundColor: Colors.white,
+                    disabledForegroundColor: const Color(0xFFFFB784),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text("ลงทะเบียน",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w800)),
+                      SizedBox(width: 10),
+                      Icon(Icons.arrow_forward, size: 20),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 22),
+
+              // I already have an account
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "ถ้ามรีบัญชีอยู่แล้ว ",
+                    style: TextStyle(color: Colors.black54),
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Text(
+                      "เข้าสู่ระบบที่นี่",
+                      style: TextStyle(
+                        color: _accent,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _label(String t) => Align(
-        alignment: Alignment.centerLeft,
-        child: Text(t, style: const TextStyle(fontSize: 12, color: Colors.black54)),
-      );
+  // ---------- UI ----------
+  Widget _label(String t) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        t,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w700,
+          color: Colors.black87,
+        ),
+      ),
+    );
+  }
 
-  InputDecoration _inputDecoration({required String hint, Widget? suffix}) {
-    return InputDecoration(
-      hintText: hint,
-      isDense: true,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
-      suffixIcon: suffix,
+  Widget _roundedField({
+    required TextEditingController controller,
+    required String hint,
+    required IconData prefixIcon,
+    TextInputType? keyboardType,
+    bool obscureText = false,
+    Widget? suffix,
+  }) {
+    return TextField(
+      controller: controller,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: const TextStyle(color: Colors.black38),
+        prefixIcon: Icon(prefixIcon, color: Colors.black45),
+        suffixIcon: suffix,
+        filled: true,
+        fillColor: const Color(0xFFF7F7F7),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Color(0xFFE6E6E6)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Color(0xFFE6E6E6)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: _accent, width: 1.2),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------- Strength UI ----------------
+
+enum PasswordStrength { none, weak, fair, good, amazing }
+
+extension on PasswordStrength {
+  int get bars {
+    switch (this) {
+      case PasswordStrength.none:
+        return 0;
+      case PasswordStrength.weak:
+        return 1;
+      case PasswordStrength.fair:
+        return 2;
+      case PasswordStrength.good:
+        return 3;
+      case PasswordStrength.amazing:
+        return 4;
+    }
+  }
+
+  String get text {
+    switch (this) {
+      case PasswordStrength.none:
+        return "-";
+      case PasswordStrength.weak:
+        return "ไร้ความปลอดภัย 😞";
+      case PasswordStrength.fair:
+        return "ใช้ได้ 🙂";
+      case PasswordStrength.good:
+        return "ดี 👍";
+      case PasswordStrength.amazing:
+        return "ยอดเยี่ยม! 🤘";
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case PasswordStrength.none:
+        return Colors.black12;
+      case PasswordStrength.weak:
+        return const Color(0xFFFF4D4D); // แดง
+      case PasswordStrength.fair:
+        return const Color(0xFFFFA000); // ส้มเข้ม
+      case PasswordStrength.good:
+        return const Color(0xFF8BC34A); // เขียวอ่อน
+      case PasswordStrength.amazing:
+        return const Color(0xFF43A047); // เขียวเข้ม
+    }
+  }
+}
+
+class _StrengthBars extends StatelessWidget {
+  final PasswordStrength strength;
+  const _StrengthBars({required this.strength});
+
+  @override
+  Widget build(BuildContext context) {
+    final active = strength.bars;
+
+    return Row(
+      children: List.generate(4, (i) {
+        final isOn = i < active;
+        return Expanded(
+          child: Container(
+            height: 4,
+            margin: EdgeInsets.only(right: i == 3 ? 0 : 6),
+            decoration: BoxDecoration(
+              color: isOn ? strength.color : Colors.black12,
+              borderRadius: BorderRadius.circular(99),
+            ),
+          ),
+        );
+      }),
     );
   }
 }
