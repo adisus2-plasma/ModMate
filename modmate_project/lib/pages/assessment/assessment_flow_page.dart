@@ -146,6 +146,7 @@ class _AssessmentFlowPageState extends State<AssessmentFlowPage> {
       await FirestoreAuthService.instance.updateAssessment(
         username: widget.username,
         gender: g.name,
+        age: age,
         weightKg: double.parse(weightKg.toStringAsFixed(2)),
         heightCm: double.parse(heightCm.toStringAsFixed(2)),
         dailyKcal: double.parse(tdee.toStringAsFixed(0)),
@@ -337,7 +338,7 @@ class _IntroStep extends StatelessWidget {
           // โลโก้เล็ก ๆ กลางจอ (ใส่ asset ได้)
           Transform.rotate(
             angle: -0.25,
-            child: const Icon(Icons.fitness_center, color: Colors.white, size: 44),
+            child: Image.asset( "assets/logo.png", width: 100, height: 100, fit: BoxFit.contain),
           ),
 
           const SizedBox(height: 18),

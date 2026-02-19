@@ -97,6 +97,7 @@ class FirestoreAuthService {
   Future<void> updateAssessment({
     required String username,
     required String gender,
+    required int age,
     required double weightKg,
     required double heightCm,
     required double dailyKcal,
@@ -107,6 +108,7 @@ class FirestoreAuthService {
     await ref.set({
       'assessment': {
         'gender': gender,
+        'age': age,
         'weightKg': weightKg,
         'heightCm': heightCm,
         'dailyKcal': dailyKcal,
@@ -117,21 +119,25 @@ class FirestoreAuthService {
 
   Future<void> updateMetrics({
     required String username,
-    required double bmi,
-    required double bmr,
-    required double tdee,
+    double? bmi,
+    double? bmr,
+    double? tdee,
   }) async {
     final docId = _docIdFromUsername(username);
     final ref = _users.doc(docId);
 
-    await ref.set({
+    debugPrint('[updateMetrics] ref.path=${ref.path} bmi=$bmi bmr=$bmr tdee=$tdee');
+
+    final data = <String, dynamic>{
       'metrics': {
-        'bmi': bmi,
-        'bmr': bmr,
-        'tdee': tdee,
+        if (bmi != null) 'bmi': bmi,
+        if (bmr != null) 'bmr': bmr,
+        if (tdee != null) 'tdee': tdee,
         'updatedAt': FieldValue.serverTimestamp(),
       }
-    }, SetOptions(merge: true));
+    };
+
+    await ref.set(data, SetOptions(merge: true));
   }
 
   Future<Map<String, dynamic>?> getMetrics(String username) async {
@@ -141,4 +147,74 @@ class FirestoreAuthService {
     final data = snap.data() as Map<String, dynamic>;
     return (data['metrics'] as Map?)?.cast<String, dynamic>();
   }
+
+  Future<Map<String, dynamic>?> getUserDoc(String username) async {
+    final docId = _docIdFromUsername(username);
+    final snap = await _users.doc(docId).get();
+    if (!snap.exists) return null;
+    return snap.data();
+  }
+
+  Future<void> updateProfileAndMetrics({
+    required String username,
+
+    // profile
+    String? gender,   // "male" | "female" | ...
+    int? age,
+    double? weightKg,
+    double? heightCm,
+    double? dailyKcal, // ถ้ามี
+
+    // metrics
+    double? bmi,
+    double? bmr,
+    double? tdee,
+
+    // optional
+    int? activityIndex,
+    int? goalIndex,
+  }) async {
+    final docId = _docIdFromUsername(username);
+    final ref = _users.doc(docId);
+
+    debugPrint(
+      '[updateProfileAndMetrics] ref.path=${ref.path} '
+      'gender=$gender age=$age weightKg=$weightKg heightCm=$heightCm dailyKcal=$dailyKcal '
+      'bmi=$bmi bmr=$bmr tdee=$tdee activityIndex=$activityIndex goalIndex=$goalIndex'
+    );
+
+    final Map<String, dynamic> data = {};
+
+    // ✅ update profile -> เก็บใน assessment (เหมือนเดิม)
+    if (gender != null || age != null || weightKg != null || heightCm != null || dailyKcal != null) {
+      data['assessment'] = {
+        if (gender != null) 'gender': gender,
+        if (age != null) 'age': age,
+        if (weightKg != null) 'weightKg': double.parse(weightKg.toStringAsFixed(2)),
+        if (heightCm != null) 'heightCm': double.parse(heightCm.toStringAsFixed(2)),
+        if (dailyKcal != null) 'dailyKcal': double.parse(dailyKcal.toStringAsFixed(0)),
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+    }
+
+    // ✅ update metrics -> เก็บใน metrics (ให้ Home/getMetrics อ่านเจอแน่นอน)
+    if (bmi != null || bmr != null || tdee != null) {
+      data['metrics'] = {
+        if (bmi != null) 'bmi': double.parse(bmi.toStringAsFixed(2)),
+        if (bmr != null) 'bmr': double.parse(bmr.toStringAsFixed(0)),
+        if (tdee != null) 'tdee': double.parse(tdee.toStringAsFixed(0)),
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+    }
+
+    // ✅ optional: เก็บ preference เพิ่มเติม (จะไว้ที่ root ก็ได้)
+    if (activityIndex != null) data['activityIndex'] = activityIndex;
+    if (goalIndex != null) data['goalIndex'] = goalIndex;
+
+    // กันกรณีเรียกมาแต่ไม่มี field จะอัปเดต
+    if (data.isEmpty) return;
+
+    await ref.set(data, SetOptions(merge: true));
+  }
+
 }

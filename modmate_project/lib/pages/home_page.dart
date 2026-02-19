@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'profile_page.dart';
 import 'bmi_bmr_page.dart';
 import 'tdee_page.dart';
 import '../services/firestore_auth_service.dart';
+import 'lbs_kg_page.dart';
 
 class HomePage extends StatefulWidget {
   final String username;
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _openTdee() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const TdeePage()),
+      MaterialPageRoute(builder: (_) => TdeePage(username: widget.username)),
     );
 
     if (result is Map) {
@@ -78,7 +79,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _openLbsToKg() async {
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const PlaceholderPage(title: 'แปลงหน่วย lbs → kg')),
+      MaterialPageRoute(builder: (_) => const LbsKgConvertPage()),
     );
   }
 
@@ -95,11 +96,12 @@ class _HomePageState extends State<HomePage> {
 
   _BmiStatus _bmiStatus(double? bmiVal) {
     if (bmiVal == null) return _BmiStatus(text: 'ยังไม่มีข้อมูล', color: Colors.white60);
-    if (bmiVal < 18.5) return _BmiStatus(text: 'น้ำหนักต่ำกว่าเกณฑ์', color: kGreen);
+    if (bmiVal < 18.5) return _BmiStatus(text: 'น้ำหนักต่ำกว่าเกณฑ์', color: const Color.fromARGB(255, 255, 217, 0));
     if (bmiVal < 25.0) return _BmiStatus(text: 'น้ำหนักอยู่ในเกณฑ์ปกติ', color: kGreen);
-    if (bmiVal < 30.0) return _BmiStatus(text: 'น้ำหนักเริ่มเกินมาตรฐาน', color: kGreen);
+    if (bmiVal < 30.0) return _BmiStatus(text: 'น้ำหนักเริ่มเกินมาตรฐาน', color: const Color.fromARGB(255, 237, 104, 3));
     return _BmiStatus(text: 'อ้วน', color: Colors.redAccent);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +116,15 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _TopHero(
+                username: widget.username,
                 tdee: tdee,
                 tdeeText: tdee == null ? null : '${_fmtInt(tdee)} kcal/วัน',
-                onAvatarTap: () {},
+                onAvatarTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ProfilePage(username: widget.username)),
+                  );
+                },
               ),
 
               const SizedBox(height: 14),
@@ -303,11 +311,13 @@ class _HomePageState extends State<HomePage> {
 // ===================== TOP HERO (ตามภาพ) =====================
 
 class _TopHero extends StatelessWidget {
+  final String username;
   final double? tdee;
   final String? tdeeText;
   final VoidCallback onAvatarTap;
 
   const _TopHero({
+    required this.username,
     required this.tdee,
     required this.tdeeText,
     required this.onAvatarTap,
@@ -332,48 +342,42 @@ class _TopHero extends StatelessWidget {
             onTap: onAvatarTap,
             borderRadius: BorderRadius.circular(999),
             child: Container(
-              width: 38,
-              height: 38,
+              width: 80,
+              height: 80,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: kAccent, width: 2),
-                image: const DecorationImage(
-                  // ✅ ใส่ภาพโปรไฟล์ทีหลัง
-                  image: AssetImage("assets/profile/avatar.png"),
-                  fit: BoxFit.cover,
-                  onError: null,
-                ),
               ),
-              child: const SizedBox.shrink(),
+              child: const Icon(Icons.person_outline, color: Color.fromARGB(255, 255, 255, 255), size: 50),
             ),
           ),
           const SizedBox(width: 10),
 
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 const SizedBox(height: 2),
-                const Text(
-                  "สวัสดี ModMate",
-                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900),
+                Text(
+                  "สวัสดี $username",
+                  style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 3),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     // ✅ โลโก้เล็ก ๆ
-                    Image.asset(
-                      "assets/logo.png",
-                      width: 46,
-                      height: 28,
-                      fit: BoxFit.contain,
-                      errorBuilder: (_, __, ___) => const Icon(Icons.fitness_center, color: Colors.white70),
-                    ),
+                    // Image.asset(
+                    //   "assets/logo.png",
+                    //   width: 46,
+                    //   height: 28,
+                    //   fit: BoxFit.contain,
+                    //   errorBuilder: (_, __, ___) => const Icon(Icons.fitness_center, color: Colors.white70),
+                    // ),
                     const SizedBox(width: 10),
                     Flexible(
                       child: RichText(
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.right,
                         text: TextSpan(
                           style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w800),
                           children: [
