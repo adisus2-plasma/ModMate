@@ -5,7 +5,8 @@ import 'register_page.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final String? username; // สมมติว่าได้มาจากหน้า register หรือเก็บไว้ใน local storage
+  const LoginPage({super.key, required this.username});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -55,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const HomePage()),
+        MaterialPageRoute(builder: (_) => HomePage(username: username)),
       );
     } catch (e) {
       debugPrint("LOGIN ERROR: $e");
@@ -75,14 +76,14 @@ class _LoginPageState extends State<LoginPage> {
   void _goRegister() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const RegisterPage()),
+      MaterialPageRoute(builder: (_) => const RegisterPage(username: AutofillHints.username)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
@@ -105,13 +106,13 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 12),
               const Text(
                 "ModMate",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+                style: TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontSize: 28, fontWeight: FontWeight.w900),
               ),
               const SizedBox(height: 6),
               const Text(
                 "เข้าสู่ระบบ",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black54),
+                style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
               ),
 
               const SizedBox(height: 26),
@@ -139,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                     _obscure
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
-                    color: Colors.black45,
+                    color: const Color.fromARGB(255, 255, 255, 255),
                   ),
                 ),
               ),
@@ -156,10 +157,10 @@ class _LoginPageState extends State<LoginPage> {
                           width: 22,
                           height: 22,
                           decoration: BoxDecoration(
-                            color: _keepSignedIn ? _accent : Colors.transparent,
+                            color: _keepSignedIn ? _accent : const Color.fromARGB(255, 255, 255, 255),
                             borderRadius: BorderRadius.circular(7),
                             border: Border.all(
-                              color: _keepSignedIn ? _accent : Colors.black26,
+                              color: _keepSignedIn ? _accent : const Color.fromARGB(66, 255, 255, 255),
                             ),
                           ),
                           child: _keepSignedIn
@@ -171,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                         const Text(
                           "เข้าสู่ระบบไว้ต่อไป",
                           style: TextStyle(
-                            color: Colors.black54,
+                            color: Color.fromARGB(255, 255, 255, 255),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -226,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("ยังไม่มีบัญชีใช่ไหม? ",
-                      style: TextStyle(color: Colors.black54)),
+                      style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
                   GestureDetector(
                     onTap: _goRegister,
                     child: const Text(
@@ -254,7 +255,7 @@ class _LoginPageState extends State<LoginPage> {
           style: const TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w700,
-            color: Colors.black87,
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
         ),
       );
@@ -271,8 +272,8 @@ class _LoginPageState extends State<LoginPage> {
       obscureText: obscureText,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.black38),
-        prefixIcon: Icon(prefixIcon, color: Colors.black45),
+        hintStyle: const TextStyle(color: Color.fromARGB(255, 208, 208, 208)),
+        prefixIcon: Icon(prefixIcon, color: const Color.fromARGB(255, 0, 0, 0)),
         suffixIcon: suffix,
         filled: true,
         fillColor: const Color(0xFFF7F7F7),

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import '../services/firestore_auth_service.dart';
+import 'assessment/assessment_flow_page.dart';
+import 'home_page.dart';
+import 'privacy/privacy_consent_page.dart';
 
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final String username; // สมมติว่าได้มาจากหน้า login หรือเก็บไว้ใน local storage
+  const RegisterPage({super.key, required this.username});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -75,21 +79,30 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       await FirestoreAuthService.instance.register(
-        username: username,
-        password: password,
+        username: username, password: password
       );
 
       if (!mounted) return;
 
-      // สมัครสำเร็จ -> กลับไปหน้า login
+      final result = await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => PrivacyConsentPage(username: username),
+        ),
+      );
+    // result คือข้อมูลที่กรอก
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomePage(username: AutofillHints.username)),
+      );
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("สมัครสำเร็จ กรุณาเข้าสู่ระบบ")),
       );
-      Navigator.pop(context);
 
-    } on AuthException catch (e) {
+    } on Exception catch (e) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message)));
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     } catch (e) {
       // debug ดู error จริง
       debugPrint("REGISTER ERROR: $e");
@@ -104,7 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final strength = _strength;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(22, 22, 22, 22),
@@ -133,14 +146,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w900,
-                  color: Colors.black87,
+                  color: Color.fromARGB(255, 255, 255, 255),
                 ),
               ),
               const SizedBox(height: 6),
               const Text(
                 "ลงทะเบียน",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black54, fontSize: 20),
+                style: TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 20),
               ),
 
               const SizedBox(height: 26),
@@ -184,7 +197,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "ความปลอดภัยรหัสผ่าน: ${strength.text}",
-                  style: const TextStyle(color: Colors.black54),
+                  style: const TextStyle(color: Color.fromARGB(234, 255, 255, 255)),
                 ),
               ),
 
@@ -219,9 +232,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   onPressed: _canSubmit ? _submit : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _accent,
-                    disabledBackgroundColor: const Color(0xFFFFE6CF),
+                    disabledBackgroundColor: const Color.fromARGB(255, 255, 123, 0),
                     foregroundColor: Colors.white,
-                    disabledForegroundColor: const Color(0xFFFFB784),
+                    disabledForegroundColor: const Color.fromARGB(255, 255, 255, 255),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
@@ -247,8 +260,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "ถ้ามรีบัญชีอยู่แล้ว ",
-                    style: TextStyle(color: Colors.black54),
+                    "ถ้ามีบัญชีอยู่แล้ว ",
+                    style: TextStyle(color: Color.fromARGB(137, 255, 255, 255)),
                   ),
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
@@ -279,7 +292,7 @@ class _RegisterPageState extends State<RegisterPage> {
         style: const TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w700,
-          color: Colors.black87,
+          color: Color.fromARGB(221, 255, 255, 255),
         ),
       ),
     );
@@ -360,7 +373,7 @@ extension on PasswordStrength {
   Color get color {
     switch (this) {
       case PasswordStrength.none:
-        return Colors.black12;
+        return const Color.fromARGB(255, 255, 255, 255);
       case PasswordStrength.weak:
         return const Color(0xFFFF4D4D); // แดง
       case PasswordStrength.fair:
@@ -389,7 +402,7 @@ class _StrengthBars extends StatelessWidget {
             height: 4,
             margin: EdgeInsets.only(right: i == 3 ? 0 : 6),
             decoration: BoxDecoration(
-              color: isOn ? strength.color : Colors.black12,
+              color: isOn ? strength.color : const Color.fromARGB(255, 255, 255, 255),
               borderRadius: BorderRadius.circular(99),
             ),
           ),

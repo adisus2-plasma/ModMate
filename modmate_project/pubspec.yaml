@@ -39,6 +39,7 @@ dependencies:
   path_provider: ^2.1.5
   firebase_core: ^4.4.0
   cloud_firestore: ^6.1.2
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +67,11 @@ flutter:
   assets:
     - assets/logo.png
     - assets/onboarding_bg_1.png
+    - assets/onboarding_bg_2.png
+    - assets/onboarding_bg_3.png
+    - assets/onboarding_bg_4.png
+    - assets/onboarding_bg_5.png
+    - assets/dumbell_forgot.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
