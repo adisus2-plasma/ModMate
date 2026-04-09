@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:modmate_project/pages/tips/tip_detail_page.dart';
 import 'profile_page.dart';
 import 'bmi_bmr_page.dart';
 import 'tdee_page.dart';
 import '../services/firestore_auth_service.dart';
 import 'lbs_kg_page.dart';
+import '../pages/tips/tip_page.dart';
+import '../pages/tips/tip_data.dart';
+import '../pages/workoutPages/body_part_selection_page.dart';
+import '../pages/workoutPages/exercise_list_page.dart';
+import '../pages/workoutPages/exercise_action_page.dart';
 
 class HomePage extends StatefulWidget {
   final String username;
@@ -35,6 +41,26 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _loadMetrics();
   }
+
+  void _goToExercise(BuildContext context, String exerciseId) {
+  // หา exercise จาก ExerciseListPage
+  final allExercises = ExerciseListPage(
+    bodyPartLabel: '',
+    bodyPartKey: '',
+  ).allExercises;
+
+  final exercise = allExercises.firstWhere(
+    (e) => e.id == exerciseId,
+    orElse: () => allExercises.first,
+  );
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => ExerciseActionPage(exercise: exercise),
+    ),
+  );
+}
 
   Future<void> _loadMetrics() async {
     final metrics = await FirestoreAuthService.instance.getMetrics(widget.username);
@@ -86,7 +112,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _openWorkoutRecommend() async {
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const PlaceholderPage(title: 'ท่าออกกำลังกายเวทเทรนนิ่ง')),
+      MaterialPageRoute(builder: (_) => const BodyPartSelectionPage()),
     );
   }
 
@@ -106,6 +132,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final bmiStatus = _bmiStatus(bmi);
+    final top3Tips = kTips.take(3).toList();
 
     return Scaffold(
       backgroundColor: kBg,
@@ -224,26 +251,30 @@ class _HomePageState extends State<HomePage> {
                 height: 260,
                 child: PageView(
                   onPageChanged: (i) => setState(() => _workoutIndex = i),
-                  children: const [
+                  children: [
                     _WorkoutSlide(
-                      imagePath: "assets/workouts/dumbbell_curls.png", // ใส่รูปจริงทีหลัง
-                      title: "Dumbbell Curls",
+                      onTap: () => _goToExercise(context, 'arm_1'),
+                      imagePath: "assets/workout_img/arm/arm_1.png", // ใส่รูปจริงทีหลัง
+                      title: "Dumbbell Side Bends",
                       subtitle: "ทำม้วนข้อด้วยดัมเบลล์",
                     ),
                     _WorkoutSlide(
-                      imagePath: "assets/workouts/bench_press.png",
-                      title: "Bench Press",
-                      subtitle: "เทมเพลตว่าง",
+                      onTap: () => _goToExercise(context, 'chest_1'),
+                      imagePath: "assets/workout_img/chest/chest_1.png",
+                      title: "Dumbbell Bench Presses",
+                      subtitle: "ท่านอนยกดัมเบลล์",
                     ),
                     _WorkoutSlide(
-                      imagePath: "assets/workouts/lat_pulldown.png",
-                      title: "Lat Pulldown",
-                      subtitle: "เทมเพลตว่าง",
+                      onTap: () => _goToExercise(context, 'back_2'),
+                      imagePath: "assets/workout_img/back/back_2.png",
+                      title: "Lat Pull-downs",
+                      subtitle: "ท่าดึงลงด้านหน้าแบบกางแขน",
                     ),
                     _WorkoutSlide(
-                      imagePath: "assets/workouts/shoulder_press.png",
-                      title: "Shoulder Press",
-                      subtitle: "เทมเพลตว่าง",
+                      onTap: () => _goToExercise(context, 'shoulder_1'),
+                      imagePath: "assets/workout_img/shoulder/shoulder_1.png",
+                      title: "Dumbbell Shoulder Press",
+                      subtitle: "ท่านนั่งยกดัมเบลล์",
                     ),
                   ],
                 ),
@@ -264,7 +295,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const TipsPage()),
+                        );
+                      },
                       child: const Text(
                         "ดูทั้งหมด",
                         style: TextStyle(color: kAccent, fontWeight: FontWeight.w800),
@@ -276,28 +312,28 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 10),
 
               SizedBox(
-                height: 170,
+                height: 280,
                 child: PageView(
                   controller: PageController(viewportFraction: 0.86),
                   onPageChanged: (i) => setState(() => _tipIndex = i),
-                  children: const [
-                    _TipCard(
-                      imagePath: "assets/tips/tip1.png",
-                      tag: "Nutrition tips",
-                      title: "การใช้สายตา\nคำนวณปริมาณโปรตีนให้เข้าใจ",
+                  children: top3Tips.map((t) {
+                    return _TipCard(
+                      imagePath: t.imagePath,
+                      tag: t.tag,
+                      title: t.title,
                       brand: "ModMate",
-                    ),
-                    _TipCard(
-                      imagePath: "assets/tips/tip2.png",
-                      tag: "Nutrition tips",
-                      title: "เลือกโปรตีน\nแทนมื้อว่าง",
-                      brand: "ModMate",
-                    ),
-                  ],
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => TipDetailPage(item: t),
+                        ),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
               const SizedBox(height: 10),
-              _DotsDark(count: 2, index: _tipIndex),
+              _DotsDark(count: top3Tips.length, index: _tipIndex),
 
               const SizedBox(height: 18),
             ],
@@ -551,11 +587,13 @@ class _WorkoutSlide extends StatelessWidget {
   final String imagePath;
   final String title;
   final String subtitle;
+  final VoidCallback? onTap;
 
   const _WorkoutSlide({
     required this.imagePath,
     required this.title,
     required this.subtitle,
+    this.onTap,
   });
 
   static const Color kCard = Color(0xFF16171B);
@@ -565,54 +603,57 @@ class _WorkoutSlide extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(22),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.asset(
-              imagePath,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(
-                color: kCard,
-                child: const Center(
-                  child: Icon(Icons.image_outlined, color: Colors.white24, size: 46),
+      child: GestureDetector(
+        onTap: onTap,
+          child: ClipRRect(
+          borderRadius: BorderRadius.circular(22),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  color: kCard,
+                  child: const Center(
+                    child: Icon(Icons.image_outlined, color: Colors.white24, size: 46),
+                  ),
                 ),
               ),
-            ),
-            // overlay ดำไล่ระดับ
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.center,
-                  colors: [
-                    Colors.black.withOpacity(0.85),
-                    Colors.black.withOpacity(0.05),
+              // overlay ดำไล่ระดับ
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.center,
+                    colors: [
+                      Colors.black.withOpacity(0.85),
+                      Colors.black.withOpacity(0.05),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 16,
+                bottom: 16,
+                right: 16,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      subtitle,
+                      style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.w700),
+                    ),
                   ],
                 ),
               ),
-            ),
-            Positioned(
-              left: 16,
-              bottom: 16,
-              right: 16,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.w700),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -626,81 +667,114 @@ class _TipCard extends StatelessWidget {
   final String tag;
   final String title;
   final String brand;
+  final VoidCallback onTap;
 
   const _TipCard({
     required this.imagePath,
     required this.tag,
     required this.title,
     required this.brand,
+    required this.onTap,
   });
-
-  static const Color kBorder = Color(0xFF2A2B30);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 14, right: 8),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(22),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  color: const Color(0xFF1A1B20),
-                  child: const Center(
-                    child: Icon(Icons.image_outlined, color: Colors.white24, size: 46),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFF1C1C1E), // สีพื้นหลังการ์ดเทาเข้ม
+            borderRadius: BorderRadius.circular(22),
+
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 1. ส่วนรูปภาพ (ครึ่งบน)
+              Expanded(
+                flex: 5,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
+                  child: Image.asset(
+                    imagePath,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
-            ),
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.center,
-                    colors: [
-                      Colors.black.withOpacity(0.85),
-                      Colors.black.withOpacity(0.10),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 14,
-              right: 14,
-              bottom: 14,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(tag, style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.w700)),
-                  const SizedBox(height: 6),
-                  Text(
-                    title,
-                    style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, height: 1.2),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
+
+              // 2. ส่วนเนื้อหา (ครึ่งล่าง)
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset(
-                        "assets/logo_small.png",
-                        width: 24,
-                        height: 18,
-                        fit: BoxFit.contain,
-                        errorBuilder: (_, __, ___) => const Icon(Icons.fitness_center, color: Colors.white70, size: 18),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            tag,
+                            style: const TextStyle(
+                              color: Colors.white60,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 0.5),
+                          // 👈 **บรรทัดที่แก้ไขเพื่อป้องกัน Overflow**
+                          Text(
+                            title,
+                            maxLines: 2, // จำกัดจำนวนบรรทัดตรงนี้
+                            overflow: TextOverflow.ellipsis, // กำหนดให้ตัดข้อความถ้าเกิน
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              height: 1.3,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 8),
-                      Text(brand, style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.w700)),
+                      
+                      // ส่วน Brand ด้านล่างสุด
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Colors.white10,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Image.asset(
+                              "assets/logo.png",
+                              width: 16,
+                              height: 16,
+                              fit: BoxFit.contain,
+                              errorBuilder: (_, __, ___) => const Icon(Icons.fitness_center, color: Colors.white70, size: 12),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            brand,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

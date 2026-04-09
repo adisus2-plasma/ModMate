@@ -243,7 +243,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Column(
                     children: [
                       Image.asset(
-                        "assets/logo_small.png",
+                        "assets/logo.png",
                         width: 54,
                         height: 34,
                         fit: BoxFit.contain,

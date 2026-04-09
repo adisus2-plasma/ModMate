@@ -72,6 +72,48 @@ flutter:
     - assets/onboarding_bg_4.png
     - assets/onboarding_bg_5.png
     - assets/dumbell_forgot.png
+    - assets/workout_img/dumbell.png
+    - assets/workout_img/bench.png
+    - assets/workout_img/latpulldown_machine.png
+    - assets/tip1.png
+    - assets/tip2.png
+    - assets/tip3.png
+    - assets/tip4.png
+    - assets/tip5.png
+    - assets/tip6.png
+    - assets/tip7.png
+    - assets/tip8.png
+    - assets/tip9.png
+    - assets/tip10.png
+    - assets/body/fullbody.png
+    - assets/body/chest.png
+    - assets/body/back.png
+    - assets/body/leg.png
+    - assets/body/arm.png
+    - assets/body/shoulder.png
+    - assets/body/core.png
+    - assets/workout_img/chest/chest_1.png
+    - assets/workout_img/chest/detail_chest_1.png
+    - assets/workout_img/chest/chest_2.png
+    - assets/workout_img/chest/detail_chest_2.png
+    - assets/workout_img/shoulder/shoulder_1.png
+    - assets/workout_img/shoulder/detail_shoulder_1.png
+    - assets/workout_img/back/back_1.png
+    - assets/workout_img/back/detail_back_1.png
+    - assets/workout_img/back/back_2.png
+    - assets/workout_img/back/detail_back_2.png
+    - assets/workout_img/leg/leg_1.png
+    - assets/workout_img/leg/detail_leg_1.png
+    - assets/workout_img/leg/leg_2.png
+    - assets/workout_img/leg/detail_leg_2.png
+    - assets/workout_img/core/core_1.png
+    - assets/workout_img/core/detail_core_1.png
+    - assets/workout_img/arm/arm_1.png
+    - assets/workout_img/arm/detail_arm_1.png
+    - assets/workout_img/arm/arm_2.png
+    - assets/workout_img/arm/detail_arm_2.png
+    - assets/workout_img/arm/arm_3.png
+    - assets/workout_img/arm/detail_arm_3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
