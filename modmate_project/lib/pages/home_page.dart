@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> {
                     _WorkoutSlide(
                       onTap: () => _goToExercise(context, 'arm_1'),
                       imagePath: "assets/workout_img/arm/arm_1.png", // ใส่รูปจริงทีหลัง
-                      title: "Dumbbell Side Bends",
+                      title: "Dumbbell Curl",
                       subtitle: "ทำม้วนข้อด้วยดัมเบลล์",
                     ),
                     _WorkoutSlide(

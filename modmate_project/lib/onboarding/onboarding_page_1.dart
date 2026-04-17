@@ -40,14 +40,9 @@ class OnboardingPage1 extends StatelessWidget {
               const Spacer(),
 
               // ✅ โลโก้จริง
-              const Text(
-                "ModMate",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w700,
-                  height: 1.15,
-                ),
+              Image.asset(
+                "assets/logo_intro.png",
+                fit: BoxFit.cover,
               ),
               const SizedBox(height: 12),
 

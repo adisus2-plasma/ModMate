@@ -49,6 +49,7 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
+          videoUrl: 'https://www.youtube.com/watch?v=VmB1G1K7v94',
 
         ),
         ExerciseModel(
@@ -82,6 +83,7 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
+          videoUrl: 'https://www.youtube.com/watch?v=eozdVDA78K0',
         ),
         ExerciseModel(
           id: 'shoulder_1',
@@ -113,6 +115,7 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
+          videoUrl: 'https://www.youtube.com/watch?v=B-aVuyhvLHU',
         ),
         ExerciseModel(
           id: 'back_1',
@@ -148,6 +151,7 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
+          videoUrl: 'https://www.youtube.com/watch?v=pYcpY20QaE8',
         ),
         ExerciseModel(
           id: 'back_2',
@@ -180,6 +184,7 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: const [
             'assets/workout_img/latpulldown_machine.png'
           ],
+          videoUrl: 'https://www.youtube.com/watch?v=eozdVDA78K0',
         ),
         ExerciseModel(
           id: 'leg_1',
@@ -211,6 +216,7 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: const [
             'assets/workout_img/dumbell.png'
           ],
+          videoUrl: 'https://www.youtube.com/watch?v=aclHkVaku9U',
         ),
         ExerciseModel(
           id: 'leg_2',
@@ -238,6 +244,7 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: const [
             'assets/workout_img/dumbell.png'
           ],
+          videoUrl: 'https://www.youtube.com/watch?v=QOVaHwm-Q6U',
         ),
         ExerciseModel(
           id: 'core_1',
@@ -268,11 +275,12 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: const [
             'assets/workout_img/dumbell.png'
           ],
+          videoUrl: 'https://www.youtube.com/watch?v=ZJXj8tqQGgk',
         ),
         ExerciseModel(
           id: 'arm_1',
           bodyPartKey: 'arm',
-          title: 'Dumbbell Side Bends',
+          title: 'Dumbbell Curl',
           subtitle: 'ท่าม้วนข้อด้วยดัมเบลล์',
           imagePath: 'assets/workout_img/arm/arm_1.png',
           description:
@@ -297,6 +305,7 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: const [
             'assets/workout_img/dumbell.png'
           ],
+          videoUrl: 'https://www.youtube.com/watch?v=ykJmrZ5v0Oo',
         ),
         ExerciseModel(
           id: 'arm_2',
@@ -325,6 +334,7 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: const [
             'assets/workout_img/dumbell.png'
           ],
+          videoUrl: 'https://www.youtube.com/watch?v=zC3nLlEvin4',
         ),
         ExerciseModel(
           id: 'arm_3',
@@ -352,6 +362,7 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: const [
             'assets/workout_img/dumbell.png'
           ],
+          videoUrl: 'https://www.youtube.com/watch?v=YbX7Wd8jQ-Q',
         ),
       ];
 

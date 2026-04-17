@@ -11,6 +11,7 @@ class ExerciseModel {
   final List<String> targetMuscles;
   final List<String> equipments;
   final List<String> equipmentImages;
+  final String videoUrl;
 
   const ExerciseModel({
     required this.id,
@@ -25,5 +26,6 @@ class ExerciseModel {
     required this.targetMuscles,
     required this.equipments,
     required this.equipmentImages,
+    required this.videoUrl,
   });
 }

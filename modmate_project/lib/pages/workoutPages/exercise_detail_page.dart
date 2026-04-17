@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modmate_project/pages/workoutPages/exercise_video_page.dart';
 import 'exercise_action_page.dart';
 import 'exercise_model.dart';
 
@@ -262,9 +263,12 @@ class _FloatingInfoCard extends StatelessWidget {
                   height: 58,
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('ตัวอย่างวิดีโอ: ยังไม่ได้เชื่อม'),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ExerciseVideoPage(
+                            videoUrl: exercise.videoUrl, 
+                            title: exercise.title)
                         ),
                       );
                     },

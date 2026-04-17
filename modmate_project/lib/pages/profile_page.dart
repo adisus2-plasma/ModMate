@@ -242,14 +242,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   // ===== bottom logo =====
                   Column(
                     children: [
-                      Image.asset(
-                        "assets/logo.png",
-                        width: 54,
-                        height: 34,
-                        fit: BoxFit.contain,
-                        errorBuilder: (_, __, ___) => const SizedBox(height: 34),
-                      ),
-                      const SizedBox(height: 10),
+                      // Image.asset(
+                      //   "assets/logo.png",
+                      //   width: 54,
+                      //   height: 34,
+                      //   fit: BoxFit.contain,
+                      //   errorBuilder: (_, __, ___) => const SizedBox(height: 34),
+                      // ),
+                      // const SizedBox(height: 10),
                       Image.asset(
                         "assets/logo.png", // ใส่รูปจริงทีหลัง
                         width: 50,
