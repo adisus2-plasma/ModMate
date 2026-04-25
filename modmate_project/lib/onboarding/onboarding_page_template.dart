@@ -4,61 +4,63 @@ class OnboardingPageTemplate extends StatelessWidget {
   final String title;
   final String description;
   final String imagePath;
+  final Widget? action; // ✅ เพิ่มตัวแปรนี้
 
   const OnboardingPageTemplate({
     super.key,
     required this.title,
     required this.description,
     required this.imagePath,
+    this.action, // ✅ รับค่าเข้ามา (ใส่หรือไม่ใส่ก็ได้)
   });
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
-      // สีพื้นหลังใกล้เคียงภาพ
       color: const Color(0xFF141518),
       child: SafeArea(
         child: Padding(
-          // เว้นล่างไว้สำหรับแถบ dot + ลูกศรใน onboarding_screen
-          padding: const EdgeInsets.fromLTRB(22, 34, 22, 130),
+          padding: EdgeInsets.fromLTRB(22, 20, 22, screenHeight * 0.12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // ✅ Title ชิดซ้าย
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.w800,
-                  height: 1.15,
-                ),
-              ),
-
-              const SizedBox(height: 18),
-
-              // ✅ Description จัดกลาง (เหมือนภาพ)
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  description,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 16,
-                    height: 1.55,
+              Column(
+                children: [
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      // ปรับขนาด Font ตามความกว้างหน้าจอเล็กน้อยเพื่อให้ Scale
+                      fontSize: screenHeight > 700 ? 28 : 24, 
+                      fontWeight: FontWeight.w800,
+                      height: 1.15,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 12),
+                  Text(
+                    description,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 15,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
               ),
-
-              const SizedBox(height: 26),
-
-              // ✅ การ์ดรูปอยู่กลางจอ
+              const SizedBox(height: 20),
               Expanded(
-                child: Center(
                   child: HeroImageCard(imagePath: imagePath),
-                ),
               ),
+              
+              // ✅ ถ้ามีการส่ง action มา ให้แสดงผลตรงนี้
+              if (action != null) ...[
+                const SizedBox(height: 20),
+                action!,
+              ],
             ],
           ),
         ),
@@ -69,37 +71,37 @@ class OnboardingPageTemplate extends StatelessWidget {
 
 class HeroImageCard extends StatelessWidget {
   final String imagePath;
-
   const HeroImageCard({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity, // ⭐ เต็มความกว้าง
-
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(32),
-
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 30,
-            offset: const Offset(0, 14),
-            color: Colors.black.withOpacity(0.35),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          width: double.infinity,
+          // ใช้ BoxDecoration สำหรับเงาและโค้ง
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(32),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 30,
+                offset: const Offset(0, 14),
+                color: Colors.black.withOpacity(0.35),
+              ),
+            ],
           ),
-        ],
-
-        image: DecorationImage(
-          image: AssetImage(imagePath),
-          fit: BoxFit.contain,
-        ),
-      ),
-
-      /// ⭐ เพิ่มความสูง
-      child: const AspectRatio(
-        aspectRatio: 3 / 5, // 🔥 ใหญ่ขึ้นจาก 9/16
-      ),
+          // ใช้ ClipRRect เพื่อให้รูปไม่ล้นขอบโค้ง
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(32),
+            child: Image.asset(
+              imagePath,
+              // ✅ สำคัญ: BoxFit.contain จะช่วยให้รูป Scale อัตโนมัติในพื้นที่ที่จำกัด
+              // โดยที่สัดส่วนรูปภาพไม่เพี้ยน
+              fit: BoxFit.contain, 
+            ),
+          ),
+        );
+      },
     );
   }
 }

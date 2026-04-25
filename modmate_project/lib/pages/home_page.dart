@@ -359,77 +359,102 @@ class _TopHero extends StatelessWidget {
     required this.onAvatarTap,
   });
 
-  static const Color kHeader = Color(0xFF2A2B30);
-  static const Color kAccent = Color(0xFFFF7A1A);
+  // ใช้สีตามภาพตัวอย่าง
+  static const Color kHeaderBg = Color(0xFF2A2B30); 
   static const Color kGreen = Color(0xFF7CFF00);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(14, 8, 14, 0),
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-      decoration: BoxDecoration(
-        color: kHeader,
-        borderRadius: BorderRadius.circular(22),
+      width: double.infinity,
+      // ปรับแต่ง Container ให้โค้งมนเฉพาะด้านล่างตามรูป
+      decoration: const BoxDecoration(
+        color: kHeaderBg,
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(40)),
       ),
-      child: Row(
+      padding: const EdgeInsets.fromLTRB(24, 20, 24, 30),
+      child: Column(
         children: [
-          InkWell(
-            onTap: onAvatarTap,
-            borderRadius: BorderRadius.circular(999),
-            child: Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: kAccent, width: 2),
-              ),
-              child: const Icon(Icons.person_outline, color: Color.fromARGB(255, 255, 255, 255), size: 50),
-            ),
-          ),
-          const SizedBox(width: 10),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                const SizedBox(height: 2),
-                Text(
-                  "สวัสดี $username",
-                  style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          // แถวบน: เวลาและสัญญาณ (ถ้าทำ App จริงมักใช้ AppBar หรือ SafeArea)
+          // ในที่นี้เราจะทำส่วน Content หลัก
+          Row(
+            children: [
+              // 1. Avatar ด้านซ้าย
+              GestureDetector(
+                onTap: onAvatarTap,
+                child: CircleAvatar(
+                  radius: 28,
+                  backgroundColor: Colors.orange.shade100,
+                  // ใส่รูป Profile จริง หรือ Icon ตามภาพ
+                  child: ClipOval(
+                    child: Image.asset(
+                      "assets/avatar_placeholder.png", // เปลี่ยนเป็นรูปของคุณ
+                      errorBuilder: (_, __, ___) => const Icon(Icons.person, color: Colors.orange),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 3),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+              ),
+              const SizedBox(width: 16),
+              
+              // 2. ข้อความทักทาย
+              Expanded(
+                child: Text(
+                  textAlign: TextAlign.center,
+                  "สวัสดี $username",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          
+          const SizedBox(height: 30),
+
+          // 3. ส่วนแสดง TDEE พร้อมโลโก้
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // โลโก้ตัว M (ModMate)
+              Image.asset(
+                "assets/logo.png", // โลโก้สีขาวตามรูป
+                width: 60,
+                height: 40,
+                errorBuilder: (_, __, ___) => const Icon(Icons.fitness_center, color: Colors.white, size: 40),
+              ),
+              const SizedBox(width: 15),
+              
+              // ข้อความ TDEE
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ✅ โลโก้เล็ก ๆ
-                    // Image.asset(
-                    //   "assets/logo.png",
-                    //   width: 46,
-                    //   height: 28,
-                    //   fit: BoxFit.contain,
-                    //   errorBuilder: (_, __, ___) => const Icon(Icons.fitness_center, color: Colors.white70),
-                    // ),
-                    const SizedBox(width: 10),
-                    Flexible(
-                      child: RichText(
-                        textAlign: TextAlign.right,
-                        text: TextSpan(
-                          style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w800),
-                          children: [
-                            const TextSpan(text: "พลังงานที่เหมาะสมกับคุณในวันนี้\n(TDEE) "),
-                            TextSpan(
-                              text: tdeeText ?? "-",
-                              style: const TextStyle(color: kGreen, fontWeight: FontWeight.w900),
-                            ),
-                          ],
-                        ),
+                    const Text(
+                      "พลังงานที่เหมาะสมกับคุณในวันนี้",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        children: [
+                          const TextSpan(text: "(TDEE) ", style: TextStyle(color: Colors.white)),
+                          TextSpan(
+                            text: tdeeText ?? "คำนวณเลย",
+                            style: const TextStyle(color: kGreen), // สีเขียวตามรูป
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

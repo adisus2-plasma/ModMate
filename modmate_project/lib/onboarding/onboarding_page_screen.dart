@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modmate_project/pages/register_page.dart';
 
 import 'onboarding_page_1.dart';
 import 'onboarding_page_2.dart';
@@ -92,8 +93,13 @@ class OnboardingScreenState extends State<OnboardingScreen> {
 
                       const SizedBox(width: 18),
                       _CircleNavButton(
-                        icon: Icons.chevron_right,
-                        onTap: _index == _totalPages - 1 ? null : _next,
+                        icon: _index == _totalPages - 1 ? Icons.done : Icons.chevron_right, // เปลี่ยนไอคอนหน้าสุดท้าย
+                        onTap: _index == _totalPages - 1 
+                          ? () {
+                              print("ไปหน้า Register");
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage(username: AutofillHints.username)));
+                            }
+                          : _next,
                         accent: accent,
                       ),
                     ],

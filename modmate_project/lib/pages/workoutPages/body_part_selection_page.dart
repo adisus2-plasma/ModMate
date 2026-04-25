@@ -174,9 +174,11 @@ class _BodyPartSelectionPageState extends State<BodyPartSelectionPage> {
                     /// buttons
                     Expanded(
                       flex: 4,
-                      child: Center(
+                      child: Align(
+                        alignment: Alignment.center,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             _bodyPartButton(BodyPart.shoulder),
                             const SizedBox(height: 10),
