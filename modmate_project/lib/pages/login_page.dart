@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               const SizedBox(height: 26),
 
-              Container(
+              SizedBox(
                 width: 80,
                 height: 80,
                 child: Image.asset(

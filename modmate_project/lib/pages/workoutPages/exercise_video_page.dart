@@ -21,10 +21,38 @@ class _ExerciseVideoPageState extends State<ExerciseVideoPage> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
-      ..initialize().then((_) {
+    
+    // 1. จัดการ Path ให้สะอาด (ลบช่องว่าง หรือเครื่องหมาย / ที่อาจเกินมา)
+    String targetPath = widget.videoUrl.trim();
+    if (targetPath.startsWith('/')) {
+      targetPath = targetPath.substring(1);
+    }
+
+    print("DEBUG: Trying to load video from: $targetPath");
+
+    // 2. ตรวจสอบเงื่อนไขแบบละเอียด
+    if (targetPath.contains('assets/')) {
+      print("DEBUG: Detected as ASSET video");
+      // ✅ บังคับใช้ .asset
+      _controller = VideoPlayerController.asset(targetPath);
+    } else {
+      print("DEBUG: Detected as NETWORK video");
+      // 🌐 ใช้ .networkUrl
+      _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
+    }
+
+    // 3. Initialize พร้อมดักจับ Error
+    _controller.initialize().then((_) {
+      print("DEBUG: Video Initialized successfully");
+      if (mounted) {
         setState(() {});
-      });
+        _controller.play();
+        _controller.setLooping(true); // เผื่ออยากให้วนลูปท่าออกกำลังกาย
+      }
+    }).catchError((error) {
+      // ถ้ายังพัง ตรงนี้จะบอกชัดเจนว่าพังที่ขั้นตอนนี้
+      print("DEBUG: Video Init Error (Detailed): $error");
+    });
   }
 
   @override

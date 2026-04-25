@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'exercise_detail_page.dart';
 import 'exercise_model.dart';
+import '../ar/exercise_ar_page.dart';
 
 class ExerciseActionPage extends StatelessWidget {
   final ExerciseModel exercise;
@@ -156,26 +157,23 @@ class ExerciseActionPage extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => ExerciseArPage(
-                                    exercise: exercise,
+                                  builder: (_) => ExerciseARPage(
+                                    title: exercise.title,
+                                    // ✅ ดึง Path แบบ Dynamic จาก Object exercise ของท่านั้นๆ
+                                    modelPath: exercise.arModelPath, 
                                   ),
                                 ),
                               );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFFF7A12),
-                              foregroundColor: Colors.white,
-                              elevation: 0,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18),
                               ),
                             ),
                             child: const Text(
                               'ดู AR ที่นี่',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                             ),
                           ),
                         ),

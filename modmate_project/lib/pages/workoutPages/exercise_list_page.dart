@@ -35,21 +35,22 @@ class ExerciseListPage extends StatelessWidget {
           shortDescription:
               'ท่านี้คล้ายท่านอนยกน้ำหนัก\nแต่มีช่วงการเคลื่อนไหวกว้างกว่า\nเน้นยืดกล้ามเนื้อเพคทรอรัลลิส (Pectoralis)',
           muscleImagePath: 'assets/workout_img/chest/detail_chest_1.png',
-          targetMuscles: const [
+          targetMuscles: [
             'Pectoralis Major',
             'Triceps brachii',
             'Anterior Deltoids',
             'Anconeus',
           ],
-          equipments: const [
+          equipments: [
             'Dumbbell (ดัมเบล)',
             'Bench (ม้านั่ง)',
           ],
-          equipmentImages: const [
+          equipmentImages: [
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
           videoUrl: 'https://www.youtube.com/watch?v=VmB1G1K7v94',
+          arModelPath: '',
 
         ),
         ExerciseModel(
@@ -69,21 +70,22 @@ class ExerciseListPage extends StatelessWidget {
           shortDescription:
               'ท่านี้เน้นกล้ามเนื้อเพคทอราลิส เมเจอร์\n(Pectoralis Major) ช่วยเพิ่มความจุปอดและเสริมความยืดหยุ่นของกล้ามเนื้อ',
           muscleImagePath: 'assets/workout_img/chest/detail_chest_2.png',
-          targetMuscles: const [
+          targetMuscles: [
             'Pectoralis Major',
             'Biceps brachii',
             'Anterior Deltoids',
             'Anconeus',
           ],
-          equipments: const [
+          equipments: [
             'Dumbbell (ดัมเบล)',
             'Bench (ม้านั่ง)',
           ],
-          equipmentImages: const [
+          equipmentImages: [
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
           videoUrl: 'https://www.youtube.com/watch?v=eozdVDA78K0',
+          arModelPath: '',
         ),
         ExerciseModel(
           id: 'shoulder_1',
@@ -102,20 +104,22 @@ class ExerciseListPage extends StatelessWidget {
           shortDescription:
               'ท่านี้เน้นกล้ามเนื้อเดลทอยด์ (Deltoid)\n สามารถทำได้ทั้งท่านั่ง ยืน หรือสลับยกทีละข้าง\n โดยหากมีพนักพิงจะช่วยป้องกันการโค้งงอของหลัง',
           muscleImagePath: 'assets/workout_img/shoulder/detail_shoulder_1.png',
-          targetMuscles: const [
+          targetMuscles: [
             'Deltoids',
             'Triceps brachii',
             'Serratus anterior',
           ],
-          equipments: const [
+          equipments: [
             'Dumbbell (ดัมเบล)',
             'Bench (ม้านั่ง)',
           ],
-          equipmentImages: const [
+          equipmentImages: [
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
-          videoUrl: 'https://www.youtube.com/watch?v=B-aVuyhvLHU',
+          videoUrl: 'assets/workout_vdo/shoulder_press.mp4',
+          arModelPath: 'assets/workout_ar_model/shoulder_press.glb',
+
         ),
         ExerciseModel(
           id: 'back_1',
@@ -135,7 +139,7 @@ class ExerciseListPage extends StatelessWidget {
           shortDescription:
               'โน้มตัวเล็กน้อย ลำตัวตั้งตรง จะเน้นทราพีเซียสส่วนบน (Upper Trapezius) แต่ถ้าโน้มตัวมาก ลำตัวขนานพื้นจะเน้นทราพีเซียสส่วนกลางและล่าง(Middle & Lower Trapezius)',
           muscleImagePath: 'assets/workout_img/back/detail_back_1.png',
-          targetMuscles: const [
+          targetMuscles: [
             'Latissimus Dorsi',
             'Teres major',
             'Posterior deltoid',
@@ -143,15 +147,16 @@ class ExerciseListPage extends StatelessWidget {
             'Trapezius',
             'Brachioradialis'
           ],
-          equipments: const [
+          equipments: [
             'Dumbbell (ดัมเบล)',
             'Bench (ม้านั่ง)',
           ],
-          equipmentImages: const [
+          equipmentImages: [
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
           videoUrl: 'https://www.youtube.com/watch?v=pYcpY20QaE8',
+          arModelPath: '',
         ),
         ExerciseModel(
           id: 'back_2',
@@ -170,7 +175,7 @@ class ExerciseListPage extends StatelessWidget {
           shortDescription:
               'ท่านี้ช่วยเสริมความหนาของแผ่นหลัง โดยเน้นกล้ามเนื้อแลทิสซิมัสดอร์ไซส่วนบนและกลาง(Latissimus Dorsi) ',
           muscleImagePath: 'assets/workout_img/back/detail_back_2.png',
-          targetMuscles: const [
+          targetMuscles: [
             'Latissimus Dorsi',
             'Trapezius',
             'Rhomboid',
@@ -178,13 +183,14 @@ class ExerciseListPage extends StatelessWidget {
             'Brachialis',
             'Pectorals'
           ],
-          equipments: const [
+          equipments: [
             'Lat pulldown Machine (เครื่องดึงหลัง)',
           ],
-          equipmentImages: const [
+          equipmentImages: [
             'assets/workout_img/latpulldown_machine.png'
           ],
           videoUrl: 'https://www.youtube.com/watch?v=eozdVDA78K0',
+          arModelPath: '',
         ),
         ExerciseModel(
           id: 'leg_1',
@@ -204,19 +210,20 @@ class ExerciseListPage extends StatelessWidget {
           shortDescription:
               'ท่านี้ช่วยเสริมความหนาของแผ่นหลัง โดยเน้นกล้ามเนื้อแลทิสซิมัสดอร์ไซส่วนบนและกลาง(Latissimus Dorsi) ',
           muscleImagePath: 'assets/workout_img/leg/detail_leg_1.png',
-          targetMuscles: const [
+          targetMuscles: [
             'Quadriceps',
             'Glutes medius',
             'Glutes maximus',
             'Fascia lata'
           ],
-          equipments: const [
+          equipments: [
             'Dumbbell (ดัมเบล)',
           ],
-          equipmentImages: const [
+          equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
           videoUrl: 'https://www.youtube.com/watch?v=aclHkVaku9U',
+          arModelPath: '',
         ),
         ExerciseModel(
           id: 'leg_2',
@@ -234,17 +241,18 @@ class ExerciseListPage extends StatelessWidget {
           shortDescription:
               'ท่าแทงขา (Lunge) ต้องใช้ขาหน้ารับน้ำหนักและอาศัยสมดุล ควรใช้ดัมเบลล์น้ำหนักเบาเพื่อป้องกันการบาดเจ็บที่เข่า ',
           muscleImagePath: 'assets/workout_img/leg/detail_leg_2.png',
-          targetMuscles: const [
+          targetMuscles: [
             'Quadriceps',
             'Glutes maximus',
           ],
-          equipments: const [
+          equipments: [
             'Dumbbell (ดัมเบล)',
           ],
-          equipmentImages: const [
+          equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
           videoUrl: 'https://www.youtube.com/watch?v=QOVaHwm-Q6U',
+          arModelPath: '',
         ),
         ExerciseModel(
           id: 'core_1',
@@ -263,19 +271,20 @@ class ExerciseListPage extends StatelessWidget {
           shortDescription:
               'ท่านี้ช่วยเน้นการบริหารกล้ามเนื้อออบลีก (Obliques) บริเวณด้านข้างลำตัว พร้อมทั้งเสริมการทำงานของกล้ามเนื้อเร็กตัส แอบโดมินิส (Rectus abdominis)',
           muscleImagePath: 'assets/workout_img/core/detail_core_1.png',
-          targetMuscles: const [
+          targetMuscles: [
             'External Obliques',
             'Internal Obliques',
             'Retus abdominis',
             'Pyramidalis'
           ],
-          equipments: const [
+          equipments: [
             'Dumbbell (ดัมเบล)',
           ],
-          equipmentImages: const [
+          equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
           videoUrl: 'https://www.youtube.com/watch?v=ZJXj8tqQGgk',
+          arModelPath: '',
         ),
         ExerciseModel(
           id: 'arm_1',
@@ -293,19 +302,20 @@ class ExerciseListPage extends StatelessWidget {
           shortDescription:
               'ท่านี้ช่วยบริหารกล้ามเนื้อไบเซ็ปส์ (Biceps) ครบทุกช่วงการทำงานทั้งงอ เหยียด และบิดหงายมือ',
           muscleImagePath: 'assets/workout_img/arm/detail_arm_1.png',
-          targetMuscles: const [
+          targetMuscles: [
             'Biceps Brachii',
             'Brachialis',
             'Anterior Deltoids',
             'Brachioradialis'
           ],
-          equipments: const [
+          equipments: [
             'Dumbbell (ดัมเบล)',
           ],
-          equipmentImages: const [
+          equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
           videoUrl: 'https://www.youtube.com/watch?v=ykJmrZ5v0Oo',
+          arModelPath: '',
         ),
         ExerciseModel(
           id: 'arm_2',
@@ -323,18 +333,19 @@ class ExerciseListPage extends StatelessWidget {
           shortDescription:
               'ท่านี้เป็นการออกกำลังกายที่เหมาะที่สุดสำหรับการพัฒนากล้ามเนื้อเบรคิโอเรเดียลิส (Brachioradialis) และไบเซ็ปส์เบรคิไอ (Biceps Brachii)',
           muscleImagePath: 'assets/workout_img/arm/detail_arm_2.png',
-          targetMuscles: const [
+          targetMuscles: [
             'Brachioradialis',
             'Biceps brachii',
             'Brachilais'
           ],
-          equipments: const [
+          equipments: [
             'Dumbbell (ดัมเบล)',
           ],
-          equipmentImages: const [
+          equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
           videoUrl: 'https://www.youtube.com/watch?v=zC3nLlEvin4',
+          arModelPath: '',
         ),
         ExerciseModel(
           id: 'arm_3',
@@ -352,17 +363,18 @@ class ExerciseListPage extends StatelessWidget {
           shortDescription:
               'เส้นใยกล้ามเนื้อไตรเซ็ปส์ (Triceps) ทั้งสามมัดยึดกับเอ็นร่วมที่ต่อกับโอเลครานอน (Olecranon) เมื่อหดตัว เอ็นจะดึงกล้ามเนื้อทั้งสามมัดให้โป่งนูนเห็นเด่นชัดเป็นรูปคล้ายเกือกม้า',
           muscleImagePath: 'assets/workout_img/arm/detail_arm_3.png',
-          targetMuscles: const [
+          targetMuscles: [
             'Triceps Brachii',
             'Anconeus'
           ],
-          equipments: const [
+          equipments: [
             'Dumbbell (ดัมเบล)',
           ],
-          equipmentImages: const [
+          equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
           videoUrl: 'https://www.youtube.com/watch?v=YbX7Wd8jQ-Q',
+          arModelPath: '',
         ),
       ];
 

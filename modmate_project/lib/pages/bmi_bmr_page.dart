@@ -513,7 +513,7 @@ class _ResultCard extends StatelessWidget {
               const Icon(Icons.local_fire_department_outlined, color: Color(0xFF2E86FF)),
               const SizedBox(width: 10),
               Text(
-                "${bmr.toStringAsFixed(0)}",
+                bmr.toStringAsFixed(0),
                 style: const TextStyle(color: Colors.white, fontSize: 34, fontWeight: FontWeight.w900),
               ),
               const SizedBox(width: 8),

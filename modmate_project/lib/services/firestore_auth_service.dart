@@ -130,9 +130,9 @@ class FirestoreAuthService {
 
     final data = <String, dynamic>{
       'metrics': {
-        if (bmi != null) 'bmi': bmi,
-        if (bmr != null) 'bmr': bmr,
-        if (tdee != null) 'tdee': tdee,
+        'bmi': ?bmi,
+        'bmr': ?bmr,
+        'tdee': ?tdee,
         'updatedAt': FieldValue.serverTimestamp(),
       }
     };
@@ -188,8 +188,8 @@ class FirestoreAuthService {
     // ✅ update profile -> เก็บใน assessment (เหมือนเดิม)
     if (gender != null || age != null || weightKg != null || heightCm != null || dailyKcal != null) {
       data['assessment'] = {
-        if (gender != null) 'gender': gender,
-        if (age != null) 'age': age,
+        'gender': ?gender,
+        'age': ?age,
         if (weightKg != null) 'weightKg': double.parse(weightKg.toStringAsFixed(2)),
         if (heightCm != null) 'heightCm': double.parse(heightCm.toStringAsFixed(2)),
         if (dailyKcal != null) 'dailyKcal': double.parse(dailyKcal.toStringAsFixed(0)),

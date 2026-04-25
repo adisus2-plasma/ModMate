@@ -12,6 +12,7 @@ class ExerciseModel {
   final List<String> equipments;
   final List<String> equipmentImages;
   final String videoUrl;
+  final String arModelPath;
 
   const ExerciseModel({
     required this.id,
@@ -27,5 +28,6 @@ class ExerciseModel {
     required this.equipments,
     required this.equipmentImages,
     required this.videoUrl,
+    required this.arModelPath,
   });
 }

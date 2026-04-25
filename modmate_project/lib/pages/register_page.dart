@@ -127,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 22),
 
               // โลโก้
-              Container(
+              SizedBox(
                 width: 80,
                 height: 80,
                 child: Image.asset(
