@@ -30,7 +30,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: IconButton(
-                      onPressed: () => Navigator.pop(context, false),
+                      onPressed: () => Navigator.pop(context),
                       icon: const Icon(Icons.chevron_left, color: Colors.white, size: 30),
                     ),
                   ),

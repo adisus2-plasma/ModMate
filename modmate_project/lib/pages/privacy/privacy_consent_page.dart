@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart'; // ✅ 1. เพิ่มตัวนี้เพื่อใช้ TapGestureRecognizer
 import 'privacy_policy_page.dart';
 
 class PrivacyConsentPage extends StatefulWidget {
-  /// ส่ง callback ไปหน้าถัดไปหลังยอมรับสำเร็จ
-  final String username; // เพิ่มตัวแปรรับ username
+  final String username;
 
   const PrivacyConsentPage({super.key, required this.username});
 
@@ -15,11 +15,12 @@ class _PrivacyConsentPageState extends State<PrivacyConsentPage> {
   static const Color kAccent = Color(0xFFFF7A1A);
   bool _accepted = false;
 
-  Future<void> _openPolicy() async {
-    Navigator.pushReplacement(
+  // ฟังก์ชันเปิดหน้า Policy
+  void _openPolicy() {
+    Navigator.push( // เปลี่ยนจาก pushReplacement เป็น push เพื่อให้กด Back กลับมาได้ (ถ้าต้องการ)
       context,
       MaterialPageRoute(
-        builder: (_) => PrivacyPolicyPage(username: widget.username), // ส่ง username ต่อไปยัง PrivacyPolicyPage
+        builder: (_) => PrivacyPolicyPage(username: widget.username),
       ),
     );
   }
@@ -59,6 +60,7 @@ class _PrivacyConsentPageState extends State<PrivacyConsentPage> {
               ),
               const SizedBox(height: 6),
 
+              // ✅ ส่วนที่ 1: ข้อความสีส้มด้านบน
               GestureDetector(
                 onTap: _openPolicy,
                 child: const Text(
@@ -75,13 +77,13 @@ class _PrivacyConsentPageState extends State<PrivacyConsentPage> {
 
               const Spacer(),
 
-              InkWell(
-                onTap: () => setState(() => _accepted = !_accepted),
-                borderRadius: BorderRadius.circular(14),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
+              // ✅ ส่วนที่ 2: Checkbox และ RichText ที่กดเฉพาะส่วนได้
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: () => setState(() => _accepted = !_accepted),
+                    child: Container(
                       width: 22,
                       height: 22,
                       margin: const EdgeInsets.only(top: 2),
@@ -94,27 +96,33 @@ class _PrivacyConsentPageState extends State<PrivacyConsentPage> {
                           ? const Icon(Icons.check, size: 16, color: Colors.white)
                           : null,
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.82),
-                            fontWeight: FontWeight.w700,
-                            height: 1.4,
-                          ),
-                          children: const [
-                            TextSpan(text: "รับทราบและให้ความยินยอมตาม ModMate\n"),
-                            TextSpan(
-                              text: "ข้อตกลงเกี่ยวกับเงื่อนไขการใช้งาน\nและนโยบายด้านความเป็นส่วนตัว",
-                              style: TextStyle(color: kAccent, decoration: TextDecoration.underline),
-                            ),
-                          ],
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.82),
+                          fontWeight: FontWeight.w700,
+                          height: 1.4,
+                          fontFamily: 'Kanit', // หรือ Font ที่คุณใช้
                         ),
+                        children: [
+                          const TextSpan(text: "รับทราบและให้ความยินยอมตาม ModMate\n"),
+                          TextSpan(
+                            text: "ข้อตกลงเกี่ยวกับเงื่อนไขการใช้งาน\nและนโยบายด้านความเป็นส่วนตัว",
+                            style: const TextStyle(
+                              color: kAccent, 
+                              decoration: TextDecoration.underline,
+                            ),
+                            // ✅ เพิ่ม recognizer เพื่อให้กดเฉพาะข้อความนี้ได้
+                            recognizer: TapGestureRecognizer()..onTap = _openPolicy,
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
 
               const SizedBox(height: 18),
@@ -129,6 +137,7 @@ class _PrivacyConsentPageState extends State<PrivacyConsentPage> {
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    disabledBackgroundColor: kAccent.withOpacity(0.4), // สีปุ่มตอนยังไม่ติ๊ก
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

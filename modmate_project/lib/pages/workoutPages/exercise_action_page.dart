@@ -154,6 +154,7 @@ class ExerciseActionPage extends StatelessWidget {
                           height: 56,
                           child: ElevatedButton(
                             onPressed: () {
+                              print('🟠 กดปุ่ม AR: ${exercise.arModelPath}');
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -208,42 +209,5 @@ class ExerciseActionPage extends StatelessWidget {
       default:
         return 'Exercise';
     }
-  }
-}
-
-class ExerciseArPage extends StatelessWidget {
-  final ExerciseModel exercise;
-
-  const ExerciseArPage({
-    super.key,
-    required this.exercise,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF070B16),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF070B16),
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
-          'AR Exercise',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: Center(
-        child: Text(
-          'หน้า AR ของ\n${exercise.title}',
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 26,
-            fontWeight: FontWeight.w700,
-            height: 1.4,
-          ),
-        ),
-      ),
-    );
   }
 }

@@ -118,7 +118,7 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/bench.png',
           ],
           videoUrl: 'assets/workout_vdo/shoulder_press.mp4',
-          arModelPath: 'assets/workout_ar_model/shoulder_press.glb',
+          arModelPath: 'assets/workout_ar_model/shoulder_press.usdz',
 
         ),
         ExerciseModel(

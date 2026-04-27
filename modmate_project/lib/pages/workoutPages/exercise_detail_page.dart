@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modmate_project/pages/workoutPages/exercise_video_page.dart';
 import 'exercise_action_page.dart';
 import 'exercise_model.dart';
+import '../ar/exercise_ar_page.dart';
 
 class ExerciseDetailPage extends StatelessWidget {
   final ExerciseModel exercise;
@@ -231,14 +232,19 @@ class _FloatingInfoCard extends StatelessWidget {
                 child: SizedBox(
                   height: 58,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ExerciseArPage(exercise: exercise),
-                        ),
-                      );
-                    },
+                            onPressed: () {
+                              print('🟠 กดปุ่ม AR: ${exercise.arModelPath}');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ExerciseARPage(
+                                    title: exercise.title,
+                                    // ✅ ดึง Path แบบ Dynamic จาก Object exercise ของท่านั้นๆ
+                                    modelPath: exercise.arModelPath, 
+                                  ),
+                                ),
+                              );
+                            },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
                       backgroundColor: ExerciseDetailPage.orangeColor,
