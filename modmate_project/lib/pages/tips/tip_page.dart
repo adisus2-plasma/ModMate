@@ -159,7 +159,7 @@ class _TipListTile extends StatelessWidget {
                       color: Colors.white,
                       fontWeight: FontWeight.w900,
                       height: 1.2,
-                      fontSize: 15.5,
+                      fontSize: 13.5,
                     ),
                   ),
                 ],

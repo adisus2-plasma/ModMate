@@ -91,7 +91,7 @@ class ExerciseListPage extends StatelessWidget {
           id: 'shoulder_1',
           bodyPartKey: 'shoulder',
           title: 'Dumbbell Shoulder Press',
-          subtitle: 'ท่านนั่งยกดัมเบลล์',
+          subtitle: 'ท่านั่งยกดัมเบลล์',
           imagePath: 'assets/workout_img/shoulder/shoulder_1.png',
           description:
               'การฝึกกล้ามเนื้อไหล่ช่วยเพิ่มความแข็งแกร่งและความสมดุลให้กับไหล่ส่วนต่าง ๆ ช่วยให้การเคลื่อนไหวราบรื่น',

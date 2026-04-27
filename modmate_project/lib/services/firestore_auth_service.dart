@@ -81,6 +81,32 @@ class FirestoreAuthService {
     return true;
   }
 
+    Future<bool> isUsernameExists(String username) async {
+    final docId = _docIdFromUsername(username);
+    final snap = await _users.doc(docId).get();
+    return snap.exists;
+  }
+
+  Future<void> resetPassword({
+    required String username,
+    required String newPassword,
+  }) async {
+    final docId = _docIdFromUsername(username);
+    final ref = _users.doc(docId);
+
+    final snap = await ref.get();
+    if (!snap.exists) throw Exception("ไม่พบ username นี้ในระบบ");
+
+    final newSalt = _randomSalt();
+    final newHash = _hashPassword(password: newPassword, salt: newSalt);
+
+    await ref.set({
+      'salt': newSalt,
+      'passwordHash': newHash,
+      'updatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
+
   // ===== Helpers =====
   String _randomSalt({int length = 16}) {
     final rnd = Random.secure();
