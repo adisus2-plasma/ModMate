@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Image.asset(
                 'assets/logo.png',
                 fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) {
+                errorBuilder: (_, _, _) {
                   // fallback เผื่อยังไม่มีรูป
                   return const Icon(Icons.fitness_center, size: 90);
                   },

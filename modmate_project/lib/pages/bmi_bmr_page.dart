@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/firestore_auth_service.dart';
+import 'custom_scrollbar.dart';
 
 class BmiBmrPage extends StatefulWidget {
   final String username; // ✅ ต้องรู้ว่า user คนไหน
@@ -125,6 +126,8 @@ class _BmiBmrPageState extends State<BmiBmrPage> {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = ScrollController();
+
     return Scaffold(
       backgroundColor: kBg,
       body: SafeArea(
@@ -135,114 +138,124 @@ class _BmiBmrPageState extends State<BmiBmrPage> {
               onBack: () => Navigator.pop(context),
             ),
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
+              child: CustomScrollbar(
+                controller: scrollController,
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
 
-                    const Text(
-                      "เพศ",
-                      style: TextStyle(color: Colors.white, fontSize: 34, fontWeight: FontWeight.w900),
-                    ),
-                    const SizedBox(height: 16),
+                      const Text(
+                        "เพศ",
+                        style: TextStyle(color: Colors.white, fontSize: 34, fontWeight: FontWeight.w900),
+                      ),
+                      const SizedBox(height: 16),
 
-                    _GenderTile(
-                      icon: Icons.male,
-                      text: "ชาย",
-                      selected: _gender == Gender.male,
-                      onTap: () => setState(() => _gender = Gender.male),
-                    ),
-                    const SizedBox(height: 12),
-                    _GenderTile(
-                      icon: Icons.female,
-                      text: "หญิง",
-                      selected: _gender == Gender.female,
-                      onTap: () => setState(() => _gender = Gender.female),
-                    ),
+                      _GenderTile(
+                        icon: Icons.male,
+                        text: "ชาย",
+                        selected: _gender == Gender.male,
+                        onTap: () => setState(() => _gender = Gender.male),
+                      ),
+                      const SizedBox(height: 12),
+                      _GenderTile(
+                        icon: Icons.female,
+                        text: "หญิง",
+                        selected: _gender == Gender.female,
+                        onTap: () => setState(() => _gender = Gender.female),
+                      ),
 
-                    const SizedBox(height: 26),
+                      const SizedBox(height: 26),
 
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              const Text(
-                                "อายุ",
-                                style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900),
-                              ),
-                              const SizedBox(height: 10),
-                              _InputPill(
-                                controller: _ageCtrl,
-                                hint: "อายุ",
-                                keyboardType: TextInputType.number,
-                              ),
-                            ],
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                const Text(
+                                  "อายุ",
+                                  style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900),
+                                ),
+                                const SizedBox(height: 10),
+                                _InputPill(
+                                  controller: _ageCtrl,
+                                  hint: "อายุ",
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ],
+                            ),
                           ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                const Text(
+                                  "น้ำหนัก",
+                                  style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900),
+                                ),
+                                const SizedBox(height: 10),
+                                _InputPill(
+                                  controller: _weightCtrl,
+                                  hint: "น้ำหนักของคุณ (kg)",
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 22),
+
+                      const Text(
+                        "ส่วนสูง",
+                        style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900),
+                      ),
+                      const SizedBox(height: 10),
+                      _InputPill(
+                        controller: _heightCtrl,
+                        hint: "ส่วนสูงของคุณ (cm)",
+                        keyboardType: TextInputType.number,
+                      ),
+
+                      const SizedBox(height: 26),
+
+                      _SmallAccentButton(
+                        text: "คำนวณ",
+                        icon: Icons.edit,
+                        onTap: _calculate,
+                      ),
+
+                      const SizedBox(height: 26),
+
+                      if (_bmi != null && _bmr != null) ...[
+                        _ResultCard(
+                          bmi: _bmi!,
+                          bmr: _bmr!,
+                          bmiLabel: _bmiLabel(_bmi!),
+                          bmiLabelColor: _bmiLabelColor(_bmi!),
                         ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              const Text(
-                                "น้ำหนัก",
-                                style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900),
-                              ),
-                              const SizedBox(height: 10),
-                              _InputPill(
-                                controller: _weightCtrl,
-                                hint: "น้ำหนักของคุณ (kg)",
-                                keyboardType: TextInputType.number,
-                              ),
-                            ],
+                        const SizedBox(height: 22),
+                        _BigAccentButton(
+                          text: "บันทึก",
+                          icon: Icons.save_outlined,
+                          onTap: _save,
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, {'bmi': _bmi, 'bmr': _bmr, 'saved': false}),
+                          child: const Text(
+                            "ไม่บันทึก / กลับ",
+                            style: TextStyle(color: Colors.white70, fontWeight: FontWeight.w800),
                           ),
                         ),
                       ],
-                    ),
 
-                    const SizedBox(height: 22),
-
-                    const Text(
-                      "ส่วนสูง",
-                      style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900),
-                    ),
-                    const SizedBox(height: 10),
-                    _InputPill(
-                      controller: _heightCtrl,
-                      hint: "ส่วนสูงของคุณ (cm)",
-                      keyboardType: TextInputType.number,
-                    ),
-
-                    const SizedBox(height: 26),
-
-                    _SmallAccentButton(
-                      text: "คำนวณ",
-                      icon: Icons.edit,
-                      onTap: _calculate,
-                    ),
-
-                    const SizedBox(height: 26),
-
-                    if (_bmi != null && _bmr != null) ...[
-                      _ResultCard(
-                        bmi: _bmi!,
-                        bmr: _bmr!,
-                        bmiLabel: _bmiLabel(_bmi!),
-                        bmiLabelColor: _bmiLabelColor(_bmi!),
-                      ),
-                      const SizedBox(height: 22),
-                      _BigAccentButton(
-                        text: "บันทึก",
-                        icon: Icons.save_outlined,
-                        onTap: _save,
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, {'bmi': _bmi, 'bmr': _bmr, 'saved': false}),
-                        child: const Text("ไม่บันทึก / กลับ", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.w800)),
-                      ),
+                      // เว้นพื้นที่ให้ keyboard ไม่บัง
+                      SizedBox(height: MediaQuery.of(context).viewInsets.bottom + 20),
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),

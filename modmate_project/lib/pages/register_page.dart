@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../services/firestore_auth_service.dart';
-import 'assessment/assessment_flow_page.dart';
 import 'home_page.dart';
 import 'privacy/privacy_consent_page.dart';
 
@@ -133,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Image.asset(
                 'assets/logo.png',
                 fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) {
+                errorBuilder: (_, _, _) {
                   // fallback เผื่อยังไม่มีรูป
                   return const Icon(Icons.fitness_center, size: 90);
                   },

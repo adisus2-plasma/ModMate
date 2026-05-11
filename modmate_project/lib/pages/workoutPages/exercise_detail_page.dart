@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modmate_project/pages/workoutPages/exercise_video_page.dart';
-import 'exercise_action_page.dart';
 import 'exercise_model.dart';
 import '../ar/exercise_ar_page.dart';
+import '../custom_scrollbar.dart';
 
 class ExerciseDetailPage extends StatelessWidget {
   final ExerciseModel exercise;
@@ -20,38 +20,44 @@ class ExerciseDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = ScrollController();
+
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _HeroTopSection(exercise: exercise),
-                  Transform.translate(
-                    offset: const Offset(0, -38),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 22),
-                          child: _FloatingInfoCard(exercise: exercise),
-                        ),
-                        const SizedBox(height: 18),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 22),
-                          child: _DetailContent(exercise: exercise),
-                        ),
-                        const SizedBox(height: 28),
-                      ],
+        child: CustomScrollbar(
+          controller: scrollController,
+          child: CustomScrollView(
+            controller: scrollController,
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _HeroTopSection(exercise: exercise),
+                    Transform.translate(
+                      offset: const Offset(0, -38),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 22),
+                            child: _FloatingInfoCard(exercise: exercise),
+                          ),
+                          const SizedBox(height: 18),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 22),
+                            child: _DetailContent(exercise: exercise),
+                          ),
+                          const SizedBox(height: 28),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -75,7 +81,6 @@ class _HeroTopSection extends StatelessWidget {
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
           ),
-
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -91,7 +96,6 @@ class _HeroTopSection extends StatelessWidget {
               ),
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.fromLTRB(22, 18, 22, 0),
             child: Row(
@@ -198,9 +202,7 @@ class _FloatingInfoCard extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 28),
-
           Text(
             exercise.title,
             textAlign: TextAlign.center,
@@ -211,9 +213,7 @@ class _FloatingInfoCard extends StatelessWidget {
               height: 1.15,
             ),
           ),
-
           const SizedBox(height: 18),
-
           Text(
             exercise.subtitle,
             textAlign: TextAlign.center,
@@ -223,28 +223,24 @@ class _FloatingInfoCard extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-
           const SizedBox(height: 28),
-
           Row(
             children: [
               Expanded(
                 child: SizedBox(
                   height: 58,
                   child: ElevatedButton(
-                            onPressed: () {
-                              print('🟠 กดปุ่ม AR: ${exercise.arModelPath}');
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => ExerciseARPage(
-                                    title: exercise.title,
-                                    // ✅ ดึง Path แบบ Dynamic จาก Object exercise ของท่านั้นๆ
-                                    modelPath: exercise.arModelPath, 
-                                  ),
-                                ),
-                              );
-                            },
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ExerciseARPage(
+                            title: exercise.title,
+                            modelPath: exercise.arModelPath,
+                          ),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
                       backgroundColor: ExerciseDetailPage.orangeColor,
@@ -273,8 +269,9 @@ class _FloatingInfoCard extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ExerciseVideoPage(
-                            videoUrl: exercise.videoUrl, 
-                            title: exercise.title)
+                            videoUrl: exercise.videoUrl,
+                            title: exercise.title,
+                          ),
                         ),
                       );
                     },
@@ -394,7 +391,10 @@ class _DetailContent extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 14),
-          _EquipmentsSection(equipments: exercise.equipments, equipmentImages: exercise.equipmentImages),
+        _EquipmentsSection(
+          equipments: exercise.equipments,
+          equipmentImages: exercise.equipmentImages,
+        ),
       ],
     );
   }
@@ -441,10 +441,7 @@ class _MuscleSection extends StatelessWidget {
                   children: [
                     const Text(
                       '•  ',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     Expanded(
                       child: Text(
@@ -495,21 +492,15 @@ class _EquipmentsSection extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: BoxDecoration(
                 color: const Color(0xFF141720),
                 borderRadius: BorderRadius.circular(18),
-                border: Border.all(
-                  color: const Color(0xFF2A2E3A),
-                ),
+                border: Border.all(color: const Color(0xFF2A2E3A)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  /// 👇 ICON IMAGE
                   Container(
                     width: 46,
                     height: 46,
@@ -523,9 +514,7 @@ class _EquipmentsSection extends StatelessWidget {
                       fit: BoxFit.contain,
                     ),
                   ),
-
                   const SizedBox(width: 12),
-
                   Text(
                     equipments[index],
                     style: const TextStyle(

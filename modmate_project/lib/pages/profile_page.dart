@@ -88,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return Image.network(
         coverUrl!,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => Image.asset(
+        errorBuilder: (_, _, _) => Image.asset(
           "assets/onboarding_bg_1.png",
           fit: BoxFit.cover,
         ),
@@ -98,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Image.asset(
       "assets/onboarding_bg_1.png", // ✅ default cover
       fit: BoxFit.cover,
-      errorBuilder: (_, __, ___) => Container(color: const Color(0xFF121318)),
+      errorBuilder: (_, _, _) => Container(color: const Color(0xFF121318)),
     );
   }
 

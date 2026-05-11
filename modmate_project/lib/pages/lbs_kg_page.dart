@@ -94,7 +94,7 @@ double get _value =>
                   width: 50,
                   height: 50,
                   fit: BoxFit.contain,
-                  errorBuilder: (_, __, ___) => const Icon(Icons.fitness_center, color: Colors.white70),
+                  errorBuilder: (_, _, _) => const Icon(Icons.fitness_center, color: Colors.white70),
                 ),
               ),
 

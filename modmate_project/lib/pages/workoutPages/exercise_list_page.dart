@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'exercise_detail_page.dart';
 import 'exercise_model.dart';
 import 'exercise_action_page.dart';
 
@@ -91,7 +90,7 @@ class ExerciseListPage extends StatelessWidget {
           id: 'shoulder_1',
           bodyPartKey: 'shoulder',
           title: 'Dumbbell Shoulder Press',
-          subtitle: 'ท่านั่งยกดัมเบลล์',
+          subtitle: 'ท่าrนั่งยกดัมเบลล์',
           imagePath: 'assets/workout_img/shoulder/shoulder_1.png',
           description:
               'การฝึกกล้ามเนื้อไหล่ช่วยเพิ่มความแข็งแกร่งและความสมดุลให้กับไหล่ส่วนต่าง ๆ ช่วยให้การเคลื่อนไหวราบรื่น',
@@ -155,8 +154,8 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
-          videoUrl: 'https://www.youtube.com/watch?v=pYcpY20QaE8',
-          arModelPath: '',
+          videoUrl: '',
+          arModelPath: 'assets/workout_ar_model/dumbbell_row.usdz',
         ),
         ExerciseModel(
           id: 'back_2',
@@ -222,8 +221,8 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
-          videoUrl: 'https://www.youtube.com/watch?v=aclHkVaku9U',
-          arModelPath: '',
+          videoUrl: '',
+          arModelPath: 'assets/workout_ar_model/dumbbell_squat.usdz',
         ),
         ExerciseModel(
           id: 'leg_2',
@@ -284,7 +283,7 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png'
           ],
           videoUrl: 'https://www.youtube.com/watch?v=ZJXj8tqQGgk',
-          arModelPath: '',
+          arModelPath: 'assets/workout_ar_model/dumbbell_side_bends.usdz',
         ),
         ExerciseModel(
           id: 'arm_1',
@@ -373,8 +372,8 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
-          videoUrl: 'https://www.youtube.com/watch?v=YbX7Wd8jQ-Q',
-          arModelPath: '',
+          videoUrl: '',
+          arModelPath: 'assets/workout_ar_model/seated_dumbbell_triceps_extensions.usdz',
         ),
       ];
 
@@ -467,7 +466,7 @@ class ExerciseListPage extends StatelessWidget {
               Expanded(
                 child: ListView.separated(
                   itemCount: exercises.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 18),
+                  separatorBuilder: (_, _) => const SizedBox(height: 18),
                   itemBuilder: (context, index) {
                     final exercise = exercises[index];
                     return _ExerciseCard(

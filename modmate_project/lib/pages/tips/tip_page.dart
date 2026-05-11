@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'tip_data.dart';
 import 'tip_detail_page.dart';
+import '../custom_scrollbar.dart';
 
 class TipsPage extends StatelessWidget {
   const TipsPage({super.key});
@@ -62,27 +63,33 @@ class TipsPage extends StatelessWidget {
 
             // ===== List =====
             Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.fromLTRB(14, 0, 14, 18),
-                itemCount: items.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  final t = items[index];
-                  return _TipListTile(
-                    tag: t.tag,
-                    title: t.title,
-                    imagePath: t.imagePath,
-                    onTap: () {
-                      // TODO: ถ้าต้องการเปิดรายละเอียด tip ให้ทำหน้า detail แล้ว navigate ตรงนี้
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => TipDetailPage(
-                            item: t
-                          ),
-                        ),
-                      );
-                    },
+              child: Builder(
+                builder: (context) {
+                  final scrollController = ScrollController();
+                  return CustomScrollbar(
+                    controller: scrollController,
+                    child: ListView.separated(
+                      controller: scrollController,
+                      padding: const EdgeInsets.fromLTRB(14, 0, 14, 18),
+                      itemCount: items.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final t = items[index];
+                        return _TipListTile(
+                          tag: t.tag,
+                          title: t.title,
+                          imagePath: t.imagePath,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => TipDetailPage(item: t),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
                   );
                 },
               ),
@@ -177,7 +184,7 @@ class _TipListTile extends StatelessWidget {
                 child: Image.asset(
                   imagePath,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
+                  errorBuilder: (_, _, _) => Container(
                     color: Colors.white10,
                     child: const Center(
                       child: Icon(Icons.image_outlined, color: Colors.white24),
