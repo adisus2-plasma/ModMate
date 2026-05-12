@@ -48,8 +48,8 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
-          videoUrl: 'https://www.youtube.com/watch?v=VmB1G1K7v94',
-          arModelPath: '',
+          videoUrl: '',
+          arModelPath: 'assets/workout_ar_model/dumbbell_bench_presses.usdz',
 
         ),
         ExerciseModel(
@@ -83,8 +83,8 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
-          videoUrl: 'https://www.youtube.com/watch?v=eozdVDA78K0',
-          arModelPath: '',
+          videoUrl: '',
+          arModelPath: 'assets/workout_ar_model/dumbbell_flys.usdz',
         ),
         ExerciseModel(
           id: 'shoulder_1',
@@ -313,8 +313,8 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
-          videoUrl: 'https://www.youtube.com/watch?v=ykJmrZ5v0Oo',
-          arModelPath: '',
+          videoUrl: '',
+          arModelPath: 'assets/workout_ar_model/dumbbell_curl.usdz',
         ),
         ExerciseModel(
           id: 'arm_2',
@@ -344,7 +344,7 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png'
           ],
           videoUrl: 'https://www.youtube.com/watch?v=zC3nLlEvin4',
-          arModelPath: '',
+          arModelPath: 'assets/workout_ar_model/hammer_curl.usdz',
         ),
         ExerciseModel(
           id: 'arm_3',
