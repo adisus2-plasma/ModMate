@@ -189,7 +189,7 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/latpulldown_machine.png'
           ],
           videoUrl: 'https://www.youtube.com/watch?v=eozdVDA78K0',
-          arModelPath: '',
+          arModelPath: 'assets/workout_ar_model/lat_pulldown.usdz',
         ),
         ExerciseModel(
           id: 'leg_1',
@@ -251,7 +251,7 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png'
           ],
           videoUrl: 'https://www.youtube.com/watch?v=QOVaHwm-Q6U',
-          arModelPath: '',
+          arModelPath: 'assets/workout_ar_model/dumbbell_lunges.usdz',
         ),
         ExerciseModel(
           id: 'core_1',
