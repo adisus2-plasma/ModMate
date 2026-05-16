@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>คู่มือการใช้งาน ModMate</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Sarabun', sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #ffffff;
+    }
+
+    /* ---- COVER PAGE ---- */
+    .cover {
+      height: 100vh;
+      min-height: 800px;
+      background: linear-gradient(160deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,122,26,0.15) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .cover-logo {
+      width: 120px;
+      height: 120px;
+      border-radius: 28px;
+      margin-bottom: 32px;
+      box-shadow: 0 20px 60px rgba(255,122,26,0.3);
+    }
+
+    .cover-title {
+      font-size: 52px;
+      font-weight: 700;
+      color: #FF7A1A;
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+    }
+
+    .cover-tagline {
+      font-size: 18px;
+      color: #cccccc;
+      margin-bottom: 48px;
+      letter-spacing: 1px;
+    }
+
+    .cover-divider {
+      width: 80px;
+      height: 3px;
+      background: #FF7A1A;
+      margin-bottom: 48px;
+      border-radius: 2px;
+    }
+
+    .cover-doc-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .cover-version {
+      font-size: 14px;
+      color: #888888;
+      margin-bottom: 80px;
+    }
+
+    .cover-footer {
+      position: absolute;
+      bottom: 40px;
+      font-size: 12px;
+      color: #555555;
+      text-align: center;
+    }
+
+    /* ---- TOC ---- */
+    .toc-page {
+      padding: 60px 80px;
+      page-break-after: always;
+      min-height: 100vh;
+    }
+
+    .toc-page h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+      padding-bottom: 16px;
+      border-bottom: 3px solid #FF7A1A;
+    }
+
+    .toc-list {
+      margin-top: 32px;
+      list-style: none;
+    }
+
+    .toc-list li {
+      display: flex;
+      align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px dotted #dddddd;
+    }
+
+    .toc-list li .toc-num {
+      font-size: 13px;
+      color: #FF7A1A;
+      font-weight: 700;
+      min-width: 32px;
+    }
+
+    .toc-list li .toc-text {
+      flex: 1;
+      font-size: 14px;
+      color: #333333;
+    }
+
+    .toc-list li .toc-dots {
+      flex: 1;
+      border-bottom: 1px dotted #cccccc;
+      margin: 0 8px;
+      min-width: 40px;
+    }
+
+    .toc-sub {
+      list-style: none;
+      margin-left: 32px;
+      margin-top: 4px;
+    }
+
+    .toc-sub li {
+      display: flex;
+      align-items: baseline;
+      padding: 4px 0;
+      border-bottom: none;
+      font-size: 13px;
+      color: #666666;
+    }
+
+    .toc-sub li .toc-num {
+      font-size: 12px;
+      color: #aaaaaa;
+      min-width: 40px;
+    }
+
+    /* ---- CONTENT ---- */
+    .content {
+      padding: 50px 80px;
+    }
+
+    .chapter {
+      page-break-before: always;
+    }
+
+    .chapter-header {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      color: white;
+      padding: 32px 40px;
+      border-radius: 12px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .chapter-number {
+      font-size: 48px;
+      font-weight: 700;
+      color: #FF7A1A;
+      line-height: 1;
+    }
+
+    .chapter-title {
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .chapter-subtitle {
+      font-size: 14px;
+      color: #aaaaaa;
+      margin-top: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 28px 0 12px;
+      padding-left: 12px;
+      border-left: 4px solid #FF7A1A;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333333;
+      margin: 20px 0 8px;
+    }
+
+    p {
+      margin-bottom: 12px;
+      color: #444444;
+    }
+
+    ul, ol {
+      margin: 8px 0 16px 20px;
+      color: #444444;
+    }
+
+    li {
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+
+    /* ---- CALLOUT BOXES ---- */
+    .callout {
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .callout-icon {
+      font-size: 20px;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .callout-body { flex: 1; }
+
+    .callout-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .callout-text {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .callout.tip {
+      background: #fff8f0;
+      border-left: 4px solid #FF7A1A;
+    }
+
+    .callout.tip .callout-title { color: #cc5500; }
+    .callout.tip .callout-text { color: #7a4000; }
+
+    .callout.info {
+      background: #f0f6ff;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .callout.info .callout-title { color: #1e40af; }
+    .callout.info .callout-text { color: #1e3a8a; }
+
+    .callout.warning {
+      background: #fffbf0;
+      border-left: 4px solid #f59e0b;
+    }
+
+    .callout.warning .callout-title { color: #b45309; }
+    .callout.warning .callout-text { color: #92400e; }
+
+    /* ---- STEP FLOW ---- */
+    .steps {
+      margin: 16px 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      background: #FF7A1A;
+      color: white;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+      padding-top: 4px;
+    }
+
+    .step-title {
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 2px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: #666666;
+    }
+
+    /* ---- FEATURE CARDS ---- */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0;
+    }
+
+    .feature-card {
+      background: #f9f9f9;
+      border: 1px solid #eeeeee;
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .feature-card-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .feature-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .feature-card-desc {
+      font-size: 12px;
+      color: #666666;
+      line-height: 1.5;
+    }
+
+    /* ---- TABLE ---- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: #1a1a1a;
+      color: white;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #eeeeee;
+      color: #444444;
+    }
+
+    tr:nth-child(even) td {
+      background: #f9f9f9;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-orange { background: #fff1e6; color: #cc5500; }
+    .badge-green  { background: #f0fdf4; color: #166534; }
+    .badge-blue   { background: #eff6ff; color: #1e40af; }
+    .badge-gray   { background: #f3f4f6; color: #4b5563; }
+
+    /* ---- FORMULA BOX ---- */
+    .formula-box {
+      background: #1a1a1a;
+      color: #FF7A1A;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 12px 0;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .formula-box .formula-label {
+      color: #888888;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    /* ---- NAVIGATION MAP ---- */
+    .nav-map {
+      background: #f9f9f9;
+      border: 1px solid #eeeeee;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 16px 0;
+      font-size: 13px;
+      line-height: 2;
+      font-family: monospace;
+      color: #333333;
+      white-space: pre;
+    }
+
+    /* ---- FOOTER ---- */
+    .page-footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid #eeeeee;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #aaaaaa;
+    }
+
+    @media print {
+      body { font-size: 12px; }
+      .cover { min-height: 100vh; }
+      .chapter { page-break-before: always; }
+      .no-break { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================================ COVER ================================ -->
+<div class="cover">
+  <img src="modmate_project/assets/logo_intro.png" class="cover-logo" alt="ModMate Logo"
+       onerror="this.style.display='none'">
+  <div class="cover-title">ModMate</div>
+  <div class="cover-tagline">แอปฟิตเนสที่เหมือนมีเพื่อนคอยช่วย</div>
+  <div class="cover-divider"></div>
+  <div class="cover-doc-title">คู่มือการใช้งานแอปพลิเคชัน</div>
+  <div class="cover-version">เวอร์ชัน 1.0 &nbsp;|&nbsp; พฤษภาคม 2569</div>
+
+  <div class="cover-footer">
+    สงวนลิขสิทธิ์ © 2569 ModMate &nbsp;|&nbsp; เอกสารฉบับนี้จัดทำเพื่อประกอบวิทยานิพนธ์ Thesis-204
+  </div>
+</div>
+
+<!-- ================================ TOC ================================ -->
+<div class="toc-page">
+  <h2>สารบัญ</h2>
+
+  <ul class="toc-list">
+    <li>
+      <span class="toc-num">1</span>
+      <span class="toc-text">แนะนำแอปพลิเคชัน ModMate</span>
+      <span class="toc-dots"></span>
+    </li>
+    <ul class="toc-sub">
+      <li><span class="toc-num">1.1</span><span>ภาพรวมและจุดเด่น</span></li>
+      <li><span class="toc-num">1.2</span><span>ความต้องการของระบบ</span></li>
+      <li><span class="toc-num">1.3</span><span>การติดตั้งแอปพลิเคชัน</span></li>
+    </ul>
+
+    <li>
+      <span class="toc-num">2</span>
+      <span class="toc-text">การเริ่มต้นใช้งาน</span>
+      <span class="toc-dots"></span>
+    </li>
+    <ul class="toc-sub">
+      <li><span class="toc-num">2.1</span><span>หน้า Splash และ Onboarding</span></li>
+      <li><span class="toc-num">2.2</span><span>การสมัครสมาชิก</span></li>
+      <li><span class="toc-num">2.3</span><span>การเข้าสู่ระบบ</span></li>
+      <li><span class="toc-num">2.4</span><span>การลืมรหัสผ่าน</span></li>
+    </ul>
+
+    <li>
+      <span class="toc-num">3</span>
+      <span class="toc-text">หน้าหลัก (Home)</span>
+      <span class="toc-dots"></span>
+    </li>
+
+    <li>
+      <span class="toc-num">4</span>
+      <span class="toc-text">ระบบฝึกออกกำลังกาย (Workout)</span>
+      <span class="toc-dots"></span>
+    </li>
+    <ul class="toc-sub">
+      <li><span class="toc-num">4.1</span><span>การเลือกส่วนของร่างกาย</span></li>
+      <li><span class="toc-num">4.2</span><span>รายการท่าออกกำลังกาย</span></li>
+      <li><span class="toc-num">4.3</span><span>รายละเอียดท่าออกกำลังกาย</span></li>
+    </ul>
+
+    <li>
+      <span class="toc-num">5</span>
+      <span class="toc-text">ฟีเจอร์ AR (Augmented Reality)</span>
+      <span class="toc-dots"></span>
+    </li>
+
+    <li>
+      <span class="toc-num">6</span>
+      <span class="toc-text">การประเมินสุขภาพและคำนวณค่าต่าง ๆ</span>
+      <span class="toc-dots"></span>
+    </li>
+    <ul class="toc-sub">
+      <li><span class="toc-num">6.1</span><span>แบบประเมินสุขภาพ (Assessment)</span></li>
+      <li><span class="toc-num">6.2</span><span>เครื่องคิดเลข BMI / BMR</span></li>
+      <li><span class="toc-num">6.3</span><span>เครื่องคิดเลข TDEE</span></li>
+    </ul>
+
+    <li>
+      <span class="toc-num">7</span>
+      <span class="toc-text">เคล็ดลับสุขภาพและการออกกำลังกาย (Tips)</span>
+      <span class="toc-dots"></span>
+    </li>
+
+    <li>
+      <span class="toc-num">8</span>
+      <span class="toc-text">โปรไฟล์ผู้ใช้</span>
+      <span class="toc-dots"></span>
+    </li>
+
+    <li>
+      <span class="toc-num">9</span>
+      <span class="toc-text">ตัวย่อและคำศัพท์</span>
+      <span class="toc-dots"></span>
+    </li>
+  </ul>
+
+  <div class="page-footer">
+    <span>ModMate — คู่มือการใช้งาน</span>
+    <span>สารบัญ</span>
+  </div>
+</div>
+
+<!-- ================================ CHAPTER 1 ================================ -->
+<div class="content">
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-number">01</div>
+    <div>
+      <div class="chapter-title">แนะนำแอปพลิเคชัน ModMate</div>
+      <div class="chapter-subtitle">รู้จักกับ ModMate และสิ่งที่แอปนี้ทำได้</div>
+    </div>
+  </div>
+
+  <h2>1.1 ภาพรวมและจุดเด่น</h2>
+  <p>
+    <strong>ModMate</strong> คือแอปพลิเคชันฟิตเนสบนมือถือที่ออกแบบมาเพื่อเป็น "เพื่อนออกกำลังกาย"
+    ในมือคุณ ไม่ว่าจะเป็นมือใหม่หรือผู้ที่ออกกำลังกายอยู่แล้ว ModMate ช่วยให้คุณเรียนรู้ท่าทาง
+    ที่ถูกต้อง คำนวณค่าสุขภาพส่วนตัว และดูโมเดล 3D ผ่านเทคโนโลยี AR ได้ทันที
+  </p>
+
+  <div class="feature-grid">
+    <div class="feature-card no-break">
+      <div class="feature-card-icon">🏋️</div>
+      <div class="feature-card-title">ท่าออกกำลังกายครบครัน</div>
+      <div class="feature-card-desc">ท่าฝึกกว่า 10+ ท่าครอบคลุมทุกส่วนของร่างกาย พร้อมขั้นตอนและภาพประกอบ</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-icon">📐</div>
+      <div class="feature-card-title">AR Exercise Viewer</div>
+      <div class="feature-card-desc">ดูโมเดล 3D ของท่าออกกำลังกายซ้อนทับในพื้นที่จริงผ่านกล้องของคุณ</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-icon">📊</div>
+      <div class="feature-card-title">คำนวณค่าสุขภาพ</div>
+      <div class="feature-card-desc">คำนวณ BMI, BMR และ TDEE ตามข้อมูลส่วนตัวของคุณโดยอัตโนมัติ</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-icon">💡</div>
+      <div class="feature-card-title">เคล็ดลับสุขภาพ</div>
+      <div class="feature-card-desc">บทความและเคล็ดลับด้านโภชนาการ การฝึก และการฟื้นฟูร่างกาย</div>
+    </div>
+  </div>
+
+  <h2>1.2 ความต้องการของระบบ</h2>
+  <table>
+    <tr>
+      <th>รายการ</th>
+      <th>iOS (iPhone/iPad)</th>
+      <th>Android</th>
+    </tr>
+    <tr>
+      <td>เวอร์ชันระบบปฏิบัติการขั้นต่ำ</td>
+      <td>iOS 12.0 ขึ้นไป</td>
+      <td>Android 6.0 ขึ้นไป</td>
+    </tr>
+    <tr>
+      <td>RAM แนะนำ</td>
+      <td>2 GB ขึ้นไป</td>
+      <td>3 GB ขึ้นไป</td>
+    </tr>
+    <tr>
+      <td>พื้นที่เก็บข้อมูล</td>
+      <td colspan="2" style="text-align:center">~150 MB</td>
+    </tr>
+    <tr>
+      <td>กล้องหลัง (สำหรับ AR)</td>
+      <td>ARKit รองรับ (iPhone 6s ขึ้นไป)</td>
+      <td>ARCore รองรับ</td>
+    </tr>
+    <tr>
+      <td>การเชื่อมต่ออินเทอร์เน็ต</td>
+      <td colspan="2" style="text-align:center">ต้องการสำหรับล็อกอิน / โหลดข้อมูล</td>
+    </tr>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <div class="callout-title">ฟีเจอร์ AR</div>
+      <div class="callout-text">ฟีเจอร์ AR ต้องใช้กล้องหลังและรองรับ ARKit (iOS) หรือ ARCore (Android)
+        กรุณาอนุญาตให้แอปเข้าถึงกล้องเมื่อระบบถามสิทธิ์</div>
+    </div>
+  </div>
+
+  <h2>1.3 การติดตั้งแอปพลิเคชัน</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">ดาวน์โหลด</div>
+        <div class="step-desc">ค้นหา "ModMate" บน App Store (iOS) หรือ Google Play (Android) แล้วกดดาวน์โหลด</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">ติดตั้ง</div>
+        <div class="step-desc">รอให้การดาวน์โหลดเสร็จสิ้น ระบบจะติดตั้งอัตโนมัติ ใช้พื้นที่ประมาณ 150 MB</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">เปิดแอปครั้งแรก</div>
+        <div class="step-desc">กดไอคอน ModMate เพื่อเปิดแอป ระบบจะแสดงหน้า Onboarding แนะนำฟีเจอร์ต่าง ๆ</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">อนุญาตสิทธิ์</div>
+        <div class="step-desc">กรุณาอนุญาต: กล้อง (สำหรับ AR) และการแจ้งเตือน ตามที่ระบบขอ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>ModMate — คู่มือการใช้งาน</span>
+    <span>บทที่ 1: แนะนำแอปพลิเคชัน</span>
+  </div>
+</div>
+
+<!-- ================================ CHAPTER 2 ================================ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-number">02</div>
+    <div>
+      <div class="chapter-title">การเริ่มต้นใช้งาน</div>
+      <div class="chapter-subtitle">Onboarding, สมัครสมาชิก และเข้าสู่ระบบ</div>
+    </div>
+  </div>
+
+  <h2>2.1 หน้า Splash และ Onboarding</h2>
+  <p>
+    เมื่อเปิดแอปครั้งแรก คุณจะเห็น <strong>หน้า Splash Screen</strong> พร้อมโลโก้ ModMate
+    เป็นเวลาประมาณ 3 วินาที จากนั้นระบบจะนำไปยัง <strong>หน้า Onboarding 5 หน้า</strong>
+    ที่แนะนำฟีเจอร์หลักของแอป
+  </p>
+  <p>สามารถเลื่อนหน้าได้โดยปัดซ้าย-ขวา หรือกดปุ่มถัดไป เมื่อครบ 5 หน้าจะเข้าสู่หน้าล็อกอิน</p>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <div class="callout-title">Onboarding ครั้งเดียว</div>
+      <div class="callout-text">หน้า Onboarding จะแสดงเฉพาะครั้งแรกที่เปิดแอปเท่านั้น
+        การเปิดแอปครั้งถัดไปจะข้ามไปยังหน้าล็อกอินโดยตรง</div>
+    </div>
+  </div>
+
+  <h2>2.2 การสมัครสมาชิก</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">กดปุ่ม "สมัครสมาชิก" หรือ Register</div>
+        <div class="step-desc">จากหน้าล็อกอิน กดลิงก์สมัครสมาชิกด้านล่าง</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">กรอกข้อมูล</div>
+        <div class="step-desc">กรอก ชื่อผู้ใช้ (Username) อีเมล และรหัสผ่านที่ต้องการ</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">ตรวจสอบความปลอดภัยรหัสผ่าน</div>
+        <div class="step-desc">ระบบแสดงระดับความแข็งแกร่งของรหัสผ่าน: Weak / Fair / Good / Amazing</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">ยืนยันการสมัคร</div>
+        <div class="step-desc">กดปุ่ม Register เพื่อสร้างบัญชี ระบบจะนำไปยังหน้าหลักโดยอัตโนมัติ</div>
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <tr>
+      <th>ระดับรหัสผ่าน</th>
+      <th>ลักษณะ</th>
+    </tr>
+    <tr>
+      <td><span class="badge badge-gray">Weak</span></td>
+      <td>ตัวอักษรน้อย ไม่มีตัวเลขหรืออักขระพิเศษ</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-blue">Fair</span></td>
+      <td>มีตัวเลขผสม ความยาวพอสมควร</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-green">Good</span></td>
+      <td>มีตัวพิมพ์ใหญ่-เล็กและตัวเลขผสม</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">Amazing</span></td>
+      <td>มีอักขระพิเศษ ตัวพิมพ์ใหญ่-เล็กและตัวเลขครบถ้วน</td>
+    </tr>
+  </table>
+
+  <h2>2.3 การเข้าสู่ระบบ</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">เปิดแอป ModMate</div>
+        <div class="step-desc">ระบบจะแสดงหน้าล็อกอินโดยอัตโนมัติ</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">กรอก Username และรหัสผ่าน</div>
+        <div class="step-desc">ใช้ข้อมูลที่สมัครไว้ กดไอคอนรูปตาเพื่อดู/ซ่อนรหัสผ่านได้</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">กดปุ่ม Login</div>
+        <div class="step-desc">ระบบตรวจสอบข้อมูลและนำไปยังหน้าหลักของแอป</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>2.4 การลืมรหัสผ่าน</h2>
+  <p>กดลิงก์ <strong>"Forgot Password?"</strong> บนหน้าล็อกอิน กรอกอีเมลที่ลงทะเบียนไว้
+    ระบบจะส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมลของคุณ</p>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <div class="callout-title">เคล็ดลับความปลอดภัย</div>
+      <div class="callout-text">ไม่ควรใช้รหัสผ่านเดียวกับบัญชีอื่น และควรตั้งรหัสระดับ Good หรือ Amazing
+        เพื่อความปลอดภัยของบัญชี</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>ModMate — คู่มือการใช้งาน</span>
+    <span>บทที่ 2: การเริ่มต้นใช้งาน</span>
+  </div>
+</div>
+
+<!-- ================================ CHAPTER 3 ================================ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-number">03</div>
+    <div>
+      <div class="chapter-title">หน้าหลัก (Home)</div>
+      <div class="chapter-subtitle">ศูนย์กลางการเข้าถึงทุกฟีเจอร์</div>
+    </div>
+  </div>
+
+  <p>
+    หน้าหลัก (Home) คือจุดศูนย์กลางของแอป แสดงข้อมูลสุขภาพของคุณ และมีทางลัดไปยังฟีเจอร์ต่าง ๆ
+    อย่างรวดเร็ว
+  </p>
+
+  <h2>ส่วนประกอบของหน้าหลัก</h2>
+
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step-num">A</div>
+      <div class="step-content">
+        <div class="step-title">ส่วนทักทาย</div>
+        <div class="step-desc">แสดงชื่อผู้ใช้งานพร้อมคำทักทาย เช่น "สวัสดี, [ชื่อ]" ที่ด้านบนของหน้า</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">B</div>
+      <div class="step-content">
+        <div class="step-title">แดชบอร์ดสุขภาพ</div>
+        <div class="step-desc">
+          แสดงค่าสุขภาพ 3 ค่าหลัก:<br>
+          • <strong>BMI</strong> — ดัชนีมวลกาย พร้อมสีบ่งบอกสถานะ (ต่ำเกินไป / ปกติ / น้ำหนักเกิน / อ้วน)<br>
+          • <strong>BMR</strong> — อัตราการเผาผลาญพื้นฐาน (กิโลแคลอรี/วัน)<br>
+          • <strong>TDEE</strong> — พลังงานที่ร่างกายต้องการต่อวันตามกิจกรรม
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">C</div>
+      <div class="step-content">
+        <div class="step-title">การ์ดทางลัด</div>
+        <div class="step-desc">
+          ทางลัดไปยัง:<br>
+          • ท่าออกกำลังกายล่าสุด<br>
+          • เคล็ดลับสุขภาพ<br>
+          • ข้อมูลโปรไฟล์ของคุณ
+        </div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">D</div>
+      <div class="step-content">
+        <div class="step-title">แถบนำทางด้านล่าง (Bottom Navigation)</div>
+        <div class="step-desc">กดไอคอนที่แถบด้านล่างเพื่อสลับระหว่าง Home / Workout / Tips / Profile</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>แผนที่การนำทาง</h2>
+  <div class="nav-map">Home (หน้าหลัก)
+├── Workout  ──→  เลือกส่วนร่างกาย  ──→  รายการท่า  ──→  รายละเอียด / AR
+├── Tips     ──→  รายการเคล็ดลับ    ──→  รายละเอียดเคล็ดลับ
+└── Profile  ──→  แก้ไขข้อมูล / คำนวณค่าสุขภาพ / ออกจากระบบ</div>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <div class="callout-title">ค่า BMI / BMR / TDEE ว่างเปล่า?</div>
+      <div class="callout-text">หากยังไม่ได้กรอกข้อมูลสุขภาพ ค่าเหล่านี้จะไม่แสดง
+        ไปที่เมนู Profile และกรอก Assessment เพื่อให้ระบบคำนวณให้อัตโนมัติ</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>ModMate — คู่มือการใช้งาน</span>
+    <span>บทที่ 3: หน้าหลัก</span>
+  </div>
+</div>
+
+<!-- ================================ CHAPTER 4 ================================ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-number">04</div>
+    <div>
+      <div class="chapter-title">ระบบฝึกออกกำลังกาย (Workout)</div>
+      <div class="chapter-subtitle">เรียนรู้ท่าออกกำลังกายอย่างถูกวิธี</div>
+    </div>
+  </div>
+
+  <h2>4.1 การเลือกส่วนของร่างกาย</h2>
+  <p>กดเมนู <strong>Workout</strong> จากแถบด้านล่าง ระบบจะแสดงหน้าเลือกส่วนของร่างกาย 6 ส่วน:</p>
+
+  <table>
+    <tr>
+      <th>ไอคอน</th>
+      <th>ส่วนร่างกาย</th>
+      <th>กลุ่มกล้ามเนื้อ</th>
+    </tr>
+    <tr>
+      <td>💪</td>
+      <td>Shoulder (ไหล่)</td>
+      <td>กล้ามเนื้อไหล่ ส่วนหน้า-ข้าง-หลัง</td>
+    </tr>
+    <tr>
+      <td>🦾</td>
+      <td>Arm (แขน)</td>
+      <td>ไบเซ็ป ไตรเซ็ป กล้ามเนื้อหน้าแขน</td>
+    </tr>
+    <tr>
+      <td>🫁</td>
+      <td>Chest (อก)</td>
+      <td>กล้ามเนื้ออก บน-กลาง-ล่าง</td>
+    </tr>
+    <tr>
+      <td>🔙</td>
+      <td>Back (หลัง)</td>
+      <td>กล้ามเนื้อหลัง แลท รอมบอยด์</td>
+    </tr>
+    <tr>
+      <td>🦵</td>
+      <td>Leg (ขา)</td>
+      <td>ต้นขา น่อง กลูต</td>
+    </tr>
+    <tr>
+      <td>⚡</td>
+      <td>Core (แกนกลาง)</td>
+      <td>หน้าท้อง ลำตัว เอว</td>
+    </tr>
+  </table>
+
+  <p>กดที่ส่วนร่างกายที่ต้องการเพื่อดูรายการท่าออกกำลังกายที่เกี่ยวข้อง</p>
+
+  <h2>4.2 รายการท่าออกกำลังกาย</h2>
+  <p>
+    หลังเลือกส่วนร่างกายแล้ว ระบบจะแสดงรายการท่าออกกำลังกายที่ใช้ฝึกส่วนนั้น
+    แต่ละรายการประกอบด้วย: ชื่อท่า, กลุ่มกล้ามเนื้อ และรูปภาพ
+  </p>
+
+  <p>ตัวอย่างท่าออกกำลังกายที่มีในแอป:</p>
+  <table>
+    <tr>
+      <th>ท่า</th>
+      <th>ส่วนร่างกาย</th>
+      <th>อุปกรณ์</th>
+    </tr>
+    <tr><td>Dumbbell Bench Press</td><td>Chest</td><td>ดัมเบล, ม้านั่ง</td></tr>
+    <tr><td>Dumbbell Flys</td><td>Chest</td><td>ดัมเบล, ม้านั่ง</td></tr>
+    <tr><td>Shoulder Press</td><td>Shoulder</td><td>ดัมเบล</td></tr>
+    <tr><td>Dumbbell Rows</td><td>Back</td><td>ดัมเบล, ม้านั่ง</td></tr>
+    <tr><td>Hammer Curl</td><td>Arm</td><td>ดัมเบล</td></tr>
+    <tr><td>Dumbbell Curl</td><td>Arm</td><td>ดัมเบล</td></tr>
+    <tr><td>Lat Pulldown</td><td>Back</td><td>เครื่อง Cable</td></tr>
+    <tr><td>Seated Dumbbell Triceps Extension</td><td>Arm</td><td>ดัมเบล</td></tr>
+    <tr><td>Dumbbell Side Bends</td><td>Core</td><td>ดัมเบล</td></tr>
+    <tr><td>Dumbbell Squats</td><td>Leg</td><td>ดัมเบล</td></tr>
+    <tr><td>Dumbbell Lunges</td><td>Leg</td><td>ดัมเบล</td></tr>
+  </table>
+
+  <h2>4.3 รายละเอียดท่าออกกำลังกาย</h2>
+  <p>กดที่ท่าออกกำลังกายใด ๆ จะเข้าสู่หน้า Exercise Action ซึ่งแสดง:</p>
+  <ul>
+    <li>รูปภาพท่าออกกำลังกายขนาดใหญ่</li>
+    <li>แท็กบ่งบอกส่วนร่างกาย</li>
+    <li>ชื่อและคำอธิบายสั้น</li>
+    <li>ปุ่ม <strong>"ดูข้อมูล"</strong> — ไปยังหน้ารายละเอียดเต็ม</li>
+    <li>ปุ่ม <strong>"ดู AR ที่นี่"</strong> — เปิดโมเดล 3D ผ่าน AR</li>
+  </ul>
+
+  <p>ในหน้ารายละเอียดเต็ม (Exercise Detail) คุณจะพบ:</p>
+  <ul>
+    <li><strong>ขั้นตอนการทำ</strong> — อธิบายทีละขั้นตอนอย่างชัดเจน</li>
+    <li><strong>กล้ามเนื้อเป้าหมาย</strong> — ภาพกายวิภาคระบุกล้ามเนื้อที่ใช้</li>
+    <li><strong>อุปกรณ์ที่ต้องการ</strong> — รูปภาพและชื่ออุปกรณ์</li>
+    <li><strong>ระดับความยาก</strong></li>
+  </ul>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <div class="callout-title">แนะนำสำหรับมือใหม่</div>
+      <div class="callout-text">อ่านขั้นตอนทั้งหมดก่อนเริ่มฝึก แล้วลองดูโมเดล AR ก่อน
+        เพื่อให้เห็นภาพท่าทางที่ถูกต้องก่อนลงมือทำจริง</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>ModMate — คู่มือการใช้งาน</span>
+    <span>บทที่ 4: ระบบฝึกออกกำลังกาย</span>
+  </div>
+</div>
+
+<!-- ================================ CHAPTER 5 ================================ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-number">05</div>
+    <div>
+      <div class="chapter-title">ฟีเจอร์ AR (Augmented Reality)</div>
+      <div class="chapter-subtitle">ดูท่าออกกำลังกาย 3D ในโลกจริง</div>
+    </div>
+  </div>
+
+  <p>
+    ฟีเจอร์ <strong>AR (Augmented Reality)</strong> คือจุดเด่นสำคัญของ ModMate
+    ช่วยให้คุณดูโมเดล 3D ของท่าออกกำลังกายซ้อนทับในพื้นที่จริงผ่านกล้องมือถือ
+    ทำให้เข้าใจท่าทางที่ถูกต้องได้ง่ายขึ้น
+  </p>
+
+  <h2>วิธีใช้งาน AR</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">เลือกท่าออกกำลังกาย</div>
+        <div class="step-desc">ไปที่ Workout เลือกส่วนร่างกาย → เลือกท่าที่ต้องการ</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">กดปุ่ม "ดู AR ที่นี่"</div>
+        <div class="step-desc">ระบบจะขออนุญาตกล้อง — กด "อนุญาต" เพื่อเปิดฟีเจอร์ AR</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">สแกนพื้นที่</div>
+        <div class="step-desc">ชี้กล้องไปที่พื้นราบ เช่น พื้นห้อง โต๊ะ หรือพื้นยิม
+          ระบบจะตรวจจับพื้นผิวและแสดงวงกลมบ่งบอกตำแหน่งที่วางได้</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">แตะหน้าจอเพื่อวางโมเดล</div>
+        <div class="step-desc">แตะที่พื้นผิวที่ตรวจจับได้ โมเดล 3D ของท่าออกกำลังกายจะปรากฏ</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">ดูและหมุนโมเดล</div>
+        <div class="step-desc">เดินรอบหรือเคลื่อนมือถือรอบโมเดลเพื่อดูท่าออกกำลังกายจากทุกมุม</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <div class="step-title">กดปุ่มย้อนกลับเพื่อออก</div>
+        <div class="step-desc">กดลูกศรย้อนกลับที่มุมซ้ายบนเพื่อกลับไปยังหน้าเลือกท่า</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>ท่าที่รองรับโมเดล AR</h2>
+  <p>ท่าออกกำลังกายต่อไปนี้มีโมเดล 3D สำหรับ AR:</p>
+
+  <div class="feature-grid">
+    <div class="feature-card no-break">
+      <div class="feature-card-title">Dumbbell Bench Press</div>
+      <div class="feature-card-desc">อก — ท่านอนยกดัมเบล</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-title">Dumbbell Flys</div>
+      <div class="feature-card-desc">อก — ท่านอนกางแขนดัมเบล</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-title">Shoulder Press</div>
+      <div class="feature-card-desc">ไหล่ — ท่ายกดัมเบลเหนือหัว</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-title">Dumbbell Rows</div>
+      <div class="feature-card-desc">หลัง — ท่าโรว์ดัมเบล</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-title">Hammer Curl</div>
+      <div class="feature-card-desc">แขน — ท่าคัลล์แบบแฮมเมอร์</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-title">Dumbbell Curl</div>
+      <div class="feature-card-desc">แขน — ท่าคัลล์ดัมเบล</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-title">Lat Pulldown</div>
+      <div class="feature-card-desc">หลัง — ท่าดึงบาร์ลง</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-title">Seated Triceps Extension</div>
+      <div class="feature-card-desc">แขน — ท่านั่งยืดกล้ามไตรเซ็ป</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-title">Dumbbell Side Bends</div>
+      <div class="feature-card-desc">Core — ท่าโน้มตัวข้าง</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-title">Dumbbell Squats</div>
+      <div class="feature-card-desc">ขา — ท่าสควอทดัมเบล</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-title">Dumbbell Lunges</div>
+      <div class="feature-card-desc">ขา — ท่าลันเจดัมเบล</div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <div class="callout-title">เพื่อประสบการณ์ AR ที่ดีที่สุด</div>
+      <div class="callout-text">
+        • ใช้ในพื้นที่ที่มีแสงสว่างเพียงพอ<br>
+        • พื้นผิวควรราบเรียบ ไม่มีลวดลายซับซ้อน<br>
+        • ถือมือถือให้นิ่งขณะสแกนพื้นผิว<br>
+        • ฟีเจอร์ AR รองรับ iOS (ARKit) เป็นหลัก บน Android ขึ้นอยู่กับรุ่นที่รองรับ ARCore
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>ModMate — คู่มือการใช้งาน</span>
+    <span>บทที่ 5: ฟีเจอร์ AR</span>
+  </div>
+</div>
+
+<!-- ================================ CHAPTER 6 ================================ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-number">06</div>
+    <div>
+      <div class="chapter-title">การประเมินสุขภาพและคำนวณค่าต่าง ๆ</div>
+      <div class="chapter-subtitle">BMI, BMR, TDEE — ตัวเลขที่ช่วยวางแผนการออกกำลังกาย</div>
+    </div>
+  </div>
+
+  <h2>6.1 แบบประเมินสุขภาพ (Assessment)</h2>
+  <p>
+    เมื่อเข้าสู่ระบบครั้งแรก หรือต้องการอัปเดตข้อมูล ให้ทำแบบประเมินสุขภาพ
+    ข้อมูลนี้จะถูกใช้คำนวณ BMI, BMR และ TDEE ให้โดยอัตโนมัติ
+  </p>
+
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">เพศ (Gender)</div>
+        <div class="step-desc">เลือก: ชาย / หญิง / อื่น ๆ / ไม่ระบุ</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">อายุ (Age)</div>
+        <div class="step-desc">กรอกอายุเป็นตัวเลข (ปี)</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">น้ำหนัก (Weight)</div>
+        <div class="step-desc">กรอกน้ำหนักเป็นกิโลกรัม (kg)</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">ส่วนสูง (Height)</div>
+        <div class="step-desc">กรอกส่วนสูงเป็นเซนติเมตร (cm)</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">ระดับกิจกรรม (Activity Level)</div>
+        <div class="step-desc">เลือกระดับกิจกรรมประจำวันที่ตรงกับคุณมากที่สุด (6 ระดับ)</div>
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <tr>
+      <th>ระดับกิจกรรม</th>
+      <th>คำอธิบาย</th>
+      <th>ตัวคูณ (Activity Factor)</th>
+    </tr>
+    <tr>
+      <td>Sedentary</td>
+      <td>ไม่ออกกำลังกาย / ทำงานนั่งโต๊ะ</td>
+      <td>× 1.2</td>
+    </tr>
+    <tr>
+      <td>Light Activity</td>
+      <td>ออกกำลังกายเบา 1-3 วัน/สัปดาห์</td>
+      <td>× 1.375</td>
+    </tr>
+    <tr>
+      <td>Moderate Activity</td>
+      <td>ออกกำลังกายปานกลาง 3-5 วัน/สัปดาห์</td>
+      <td>× 1.55</td>
+    </tr>
+    <tr>
+      <td>High Activity</td>
+      <td>ออกกำลังกายหนัก 6-7 วัน/สัปดาห์</td>
+      <td>× 1.725</td>
+    </tr>
+    <tr>
+      <td>Very High Activity</td>
+      <td>ออกกำลังกายหนักมาก / งานหนักทุกวัน</td>
+      <td>× 1.9</td>
+    </tr>
+    <tr>
+      <td>Double Training</td>
+      <td>ฝึกซ้อมสองรอบต่อวัน</td>
+      <td>× 2.0</td>
+    </tr>
+  </table>
+
+  <h2>6.2 เครื่องคิดเลข BMI / BMR</h2>
+
+  <h3>BMI (Body Mass Index) — ดัชนีมวลกาย</h3>
+  <div class="formula-box">
+    <div class="formula-label">สูตรคำนวณ BMI</div>
+    BMI = น้ำหนัก(kg) ÷ (ส่วนสูง(m))²
+  </div>
+
+  <table>
+    <tr>
+      <th>ช่วง BMI</th>
+      <th>สถานะ</th>
+    </tr>
+    <tr><td>น้อยกว่า 18.5</td><td><span class="badge badge-blue">น้ำหนักต่ำกว่าเกณฑ์</span></td></tr>
+    <tr><td>18.5 – 22.9</td><td><span class="badge badge-green">ปกติ / สมส่วน</span></td></tr>
+    <tr><td>23.0 – 24.9</td><td><span class="badge badge-orange">น้ำหนักเกิน</span></td></tr>
+    <tr><td>25.0 – 29.9</td><td><span class="badge badge-orange">อ้วนระดับ 1</span></td></tr>
+    <tr><td>30.0 ขึ้นไป</td><td><span class="badge badge-gray">อ้วนระดับ 2</span></td></tr>
+  </table>
+
+  <h3>BMR (Basal Metabolic Rate) — อัตราการเผาผลาญพื้นฐาน</h3>
+  <div class="formula-box">
+    <div class="formula-label">สูตร Mifflin-St Jeor</div>
+    ชาย:  BMR = (10 × W) + (6.25 × H) − (5 × A) + 5
+    หญิง: BMR = (10 × W) + (6.25 × H) − (5 × A) − 161
+
+    W = น้ำหนัก (kg) | H = ส่วนสูง (cm) | A = อายุ (ปี)
+  </div>
+
+  <h2>6.3 เครื่องคิดเลข TDEE</h2>
+  <p>TDEE (Total Daily Energy Expenditure) คือพลังงานทั้งหมดที่ร่างกายต้องการในแต่ละวัน</p>
+
+  <div class="formula-box">
+    <div class="formula-label">สูตรคำนวณ TDEE</div>
+    TDEE = BMR × Activity Factor
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <div class="callout-title">วิธีใช้ค่า TDEE</div>
+      <div class="callout-text">
+        • ต้องการลดน้ำหนัก → กินแคลอรีต่ำกว่า TDEE ประมาณ 300-500 kcal/วัน<br>
+        • ต้องการรักษาน้ำหนัก → กินแคลอรีเท่ากับ TDEE<br>
+        • ต้องการเพิ่มกล้ามเนื้อ → กินแคลอรีสูงกว่า TDEE ประมาณ 200-300 kcal/วัน
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>ModMate — คู่มือการใช้งาน</span>
+    <span>บทที่ 6: การประเมินสุขภาพ</span>
+  </div>
+</div>
+
+<!-- ================================ CHAPTER 7 ================================ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-number">07</div>
+    <div>
+      <div class="chapter-title">เคล็ดลับสุขภาพและการออกกำลังกาย (Tips)</div>
+      <div class="chapter-subtitle">บทความและความรู้ด้านฟิตเนสอย่างครอบคลุม</div>
+    </div>
+  </div>
+
+  <p>
+    เมนู <strong>Tips</strong> รวบรวมบทความและเคล็ดลับด้านสุขภาพ โภชนาการ
+    และการออกกำลังกายมากกว่า 10 บทความ
+  </p>
+
+  <h2>หมวดหมู่เคล็ดลับ</h2>
+  <div class="feature-grid">
+    <div class="feature-card no-break">
+      <div class="feature-card-icon">🥗</div>
+      <div class="feature-card-title">โภชนาการ (Nutrition)</div>
+      <div class="feature-card-desc">แนวทางการกินอาหารเพื่อสนับสนุนการออกกำลังกาย</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-icon">🏋️</div>
+      <div class="feature-card-title">เทคนิคการฝึก (Training)</div>
+      <div class="feature-card-desc">วิธีฝึกอย่างมีประสิทธิภาพและป้องกันการบาดเจ็บ</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-icon">😴</div>
+      <div class="feature-card-title">การพักฟื้น (Recovery)</div>
+      <div class="feature-card-desc">ความสำคัญของการพักผ่อนและวิธีฟื้นฟูกล้ามเนื้อ</div>
+    </div>
+    <div class="feature-card no-break">
+      <div class="feature-card-icon">🧠</div>
+      <div class="feature-card-title">ทั่วไป (General)</div>
+      <div class="feature-card-desc">ความรู้และข้อมูลสุขภาพโดยทั่วไปที่เป็นประโยชน์</div>
+    </div>
+  </div>
+
+  <h2>วิธีใช้งาน Tips</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">กดเมนู Tips จากแถบด้านล่าง</div>
+        <div class="step-desc">ระบบแสดงรายการเคล็ดลับทั้งหมด</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">เลือกหัวข้อที่สนใจ</div>
+        <div class="step-desc">กดการ์ดเพื่อดูเนื้อหาแบบเต็ม</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">อ่านบทความ</div>
+        <div class="step-desc">หน้ารายละเอียดแสดงรูปภาพขนาดใหญ่ หมวดหมู่ และเนื้อหาอ่านง่าย</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>ModMate — คู่มือการใช้งาน</span>
+    <span>บทที่ 7: Tips</span>
+  </div>
+</div>
+
+<!-- ================================ CHAPTER 8 ================================ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-number">08</div>
+    <div>
+      <div class="chapter-title">โปรไฟล์ผู้ใช้</div>
+      <div class="chapter-subtitle">จัดการข้อมูลส่วนตัวและตั้งค่าต่าง ๆ</div>
+    </div>
+  </div>
+
+  <p>
+    เมนู <strong>Profile</strong> แสดงข้อมูลส่วนตัวและสรุปข้อมูลสุขภาพของคุณ
+    พร้อมทั้งให้คุณแก้ไขข้อมูลและเข้าถึงเครื่องคิดเลขสุขภาพต่าง ๆ
+  </p>
+
+  <h2>ข้อมูลที่แสดงในโปรไฟล์</h2>
+  <ul>
+    <li>รูปโปรไฟล์และภาพปก</li>
+    <li>ชื่อผู้ใช้งาน (Username)</li>
+    <li>เพศ แสดงด้วยสัญลักษณ์ ♂ / ♀ / ⚧ / –</li>
+    <li>อายุ, น้ำหนัก, ส่วนสูง</li>
+    <li>สรุปค่า BMI, BMR, TDEE</li>
+  </ul>
+
+  <h2>การแก้ไขโปรไฟล์</h2>
+  <div class="steps">
+    <div class="step no-break">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">กดไอคอนแก้ไข หรือปุ่ม Edit Profile</div>
+        <div class="step-desc">ระบบเปิดหน้าแบบฟอร์มแก้ไขข้อมูล</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">แก้ไขข้อมูลที่ต้องการ</div>
+        <div class="step-desc">เปลี่ยนชื่อ, อายุ, น้ำหนัก, ส่วนสูง หรือระดับกิจกรรม</div>
+      </div>
+    </div>
+    <div class="step no-break">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">กดบันทึก</div>
+        <div class="step-desc">ระบบจะอัปเดตข้อมูลและคำนวณค่าสุขภาพใหม่โดยอัตโนมัติ</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>ทางลัดจากโปรไฟล์</h2>
+  <table>
+    <tr>
+      <th>ตัวเลือก</th>
+      <th>คำอธิบาย</th>
+    </tr>
+    <tr>
+      <td>BMI/BMR Calculator</td>
+      <td>เครื่องคิดเลขคำนวณ BMI และ BMR แบบแยกส่วน</td>
+    </tr>
+    <tr>
+      <td>TDEE Calculator</td>
+      <td>คำนวณพลังงานที่ร่างกายต้องการต่อวัน</td>
+    </tr>
+    <tr>
+      <td>Logout</td>
+      <td>ออกจากระบบ (มีกล่องยืนยันก่อนออก)</td>
+    </tr>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <div class="callout-title">ก่อนออกจากระบบ</div>
+      <div class="callout-text">กดปุ่ม Logout จะมีกล่องยืนยันถามก่อนเสมอ
+        เพื่อป้องกันการออกจากระบบโดยไม่ตั้งใจ ข้อมูลของคุณจะถูกบันทึกไว้ในระบบ</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>ModMate — คู่มือการใช้งาน</span>
+    <span>บทที่ 8: โปรไฟล์ผู้ใช้</span>
+  </div>
+</div>
+
+<!-- ================================ CHAPTER 9 ================================ -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-number">09</div>
+    <div>
+      <div class="chapter-title">ตัวย่อและคำศัพท์</div>
+      <div class="chapter-subtitle">อธิบายคำศัพท์ที่ใช้ในแอปพลิเคชัน</div>
+    </div>
+  </div>
+
+  <table>
+    <tr>
+      <th>คำ/ตัวย่อ</th>
+      <th>ความหมาย</th>
+      <th>หมายเหตุ</th>
+    </tr>
+    <tr>
+      <td><strong>BMI</strong></td>
+      <td>Body Mass Index — ดัชนีมวลกาย</td>
+      <td>ใช้ประเมินน้ำหนักเทียบกับส่วนสูง</td>
+    </tr>
+    <tr>
+      <td><strong>BMR</strong></td>
+      <td>Basal Metabolic Rate — อัตราการเผาผลาญพื้นฐาน</td>
+      <td>แคลอรีที่ร่างกายเผาผลาญขณะพักผ่อน</td>
+    </tr>
+    <tr>
+      <td><strong>TDEE</strong></td>
+      <td>Total Daily Energy Expenditure — พลังงานที่ร่างกายใช้ต่อวัน</td>
+      <td>BMR คูณด้วยระดับกิจกรรม</td>
+    </tr>
+    <tr>
+      <td><strong>AR</strong></td>
+      <td>Augmented Reality — ความเป็นจริงเสริม</td>
+      <td>เทคโนโลยีซ้อนภาพ 3D บนโลกจริงผ่านกล้อง</td>
+    </tr>
+    <tr>
+      <td><strong>ARKit</strong></td>
+      <td>Apple's AR framework</td>
+      <td>ระบบ AR ของ Apple สำหรับ iOS</td>
+    </tr>
+    <tr>
+      <td><strong>ARCore</strong></td>
+      <td>Google's AR framework</td>
+      <td>ระบบ AR ของ Google สำหรับ Android</td>
+    </tr>
+    <tr>
+      <td><strong>USDZ</strong></td>
+      <td>Universal Scene Description Zip</td>
+      <td>รูปแบบไฟล์ 3D ที่ ARKit ใช้</td>
+    </tr>
+    <tr>
+      <td><strong>Mifflin-St Jeor</strong></td>
+      <td>สูตรคำนวณ BMR ที่ถูกต้องและใช้กันแพร่หลายที่สุด</td>
+      <td>พัฒนาในปี ค.ศ. 1990</td>
+    </tr>
+    <tr>
+      <td><strong>Firestore</strong></td>
+      <td>Google Cloud Firestore — ฐานข้อมูล Cloud ของ Firebase</td>
+      <td>เก็บข้อมูลผู้ใช้ทั้งหมด</td>
+    </tr>
+    <tr>
+      <td><strong>Sedentary</strong></td>
+      <td>ระดับกิจกรรมที่ต่ำที่สุด — ไม่ออกกำลังกาย</td>
+      <td>Activity Factor = 1.2</td>
+    </tr>
+  </table>
+
+  <br>
+
+  <div class="callout info">
+    <div class="callout-icon">📞</div>
+    <div class="callout-body">
+      <div class="callout-title">ติดต่อและความช่วยเหลือ</div>
+      <div class="callout-text">
+        หากพบปัญหาในการใช้งาน หรือต้องการแจ้งข้อเสนอแนะ สามารถติดต่อทีมพัฒนา ModMate
+        ผ่านช่องทางในแอปพลิเคชัน หรืออีเมลที่แสดงในหน้า Privacy Policy
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top: 60px; padding: 40px 20px; background: #f9f9f9; border-radius: 12px;">
+    <div style="font-size: 32px; color: #FF7A1A; font-weight: 700; margin-bottom: 8px;">ModMate</div>
+    <div style="color: #888888; font-size: 13px; margin-bottom: 4px;">แอปฟิตเนสที่เหมือนมีเพื่อนคอยช่วย</div>
+    <div style="color: #bbbbbb; font-size: 12px;">เอกสารฉบับนี้จัดทำขึ้นเพื่อประกอบวิทยานิพนธ์ Thesis-204</div>
+    <div style="color: #bbbbbb; font-size: 12px; margin-top: 8px;">พฤษภาคม 2569</div>
+  </div>
+
+  <div class="page-footer">
+    <span>ModMate — คู่มือการใช้งาน</span>
+    <span>บทที่ 9: ตัวย่อและคำศัพท์</span>
+  </div>
+</div>
+</div><!-- end content -->
+
+</body>
+</html>
