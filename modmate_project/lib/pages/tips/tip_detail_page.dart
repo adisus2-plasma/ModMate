@@ -145,6 +145,22 @@ class TipDetailPage extends StatelessWidget {
                       height: 1.6, // ระยะห่างระหว่างบรรทัด
                     ),
                   ),
+                  
+                  if (item.reference != null && item.reference!.isNotEmpty) ...[
+                    const SizedBox(height: 48), // เว้นระยะห่างลงมาจากเนื้อหาหลัก
+                    Center(
+                      child: Text(
+                        item.reference!, // ดึงข้อความและเลขหน้าตามที่ตั้งไว้ใน tip_data.dart
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.35), // สีเทาจาง ๆ ไม่แย่งสายตา
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.italic, // ทำเป็นตัวเอียงสไตล์หนังสือ
+                        ),
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 40),
                 ],
               ),

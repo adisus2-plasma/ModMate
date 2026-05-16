@@ -395,6 +395,25 @@ class _DetailContent extends StatelessWidget {
           equipments: exercise.equipments,
           equipmentImages: exercise.equipmentImages,
         ),
+
+        if (exercise.reference.isNotEmpty) ...[
+          const SizedBox(height: 36), // เว้นระยะห่างลงมาจากส่วนอุปกรณ์
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Text(
+                exercise.reference, // 👈 ดึงข้อความและเลขหน้าตามที่เราตั้งไว้ใน Model
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.35), // ใช้สีขาวจาง ๆ เพื่อไม่ให้แย่งสายตา
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.italic, // ทำเป็นตัวเอียงเพิ่มความสวยงามเหมือนแหล่งอ้างอิงในหนังสือ
+                ),
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }

@@ -15,9 +15,31 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashPage(), // ✅ หน้าแรก
+    final fadeTransitions = PageTransitionsTheme(
+      builders: <TargetPlatform, PageTransitionsBuilder>{
+        for (final p in TargetPlatform.values) p: const _FadePageTransitionsBuilder(),
+      },
     );
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(pageTransitionsTheme: fadeTransitions),
+      home: const SplashPage(), // ✅ หน้าแรก
+    );
+  }
+}
+
+class _FadePageTransitionsBuilder extends PageTransitionsBuilder {
+  const _FadePageTransitionsBuilder();
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    return FadeTransition(opacity: animation, child: child);
   }
 }

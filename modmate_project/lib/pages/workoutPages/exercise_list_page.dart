@@ -14,7 +14,7 @@ class ExerciseListPage extends StatelessWidget {
 
   static const Color bgColor = Color(0xFF070B16);
   static const Color cardColor = Color(0xFF44454F);
-  static const Color activeColor = Color(0xFFFF7A12);
+  static const Color activeColor = Color.fromARGB(255, 44, 33, 25);
 
   List<ExerciseModel> get allExercises => const [
         ExerciseModel(
@@ -48,8 +48,9 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
-          videoUrl: '',
+          videoUrl: 'assets/workout_vdo/bench_presses.mp4',
           arModelPath: 'assets/workout_ar_model/dumbbell_bench_presses.usdz',
+          reference: 'ข้อมูลจากหนังสือ หนังสือกายวิภาค การออกกำลังกายเเบบฝึกกล้ามเนื้อ หน้า 81',
 
         ),
         ExerciseModel(
@@ -73,7 +74,7 @@ class ExerciseListPage extends StatelessWidget {
             'Pectoralis Major',
             'Biceps brachii',
             'Anterior Deltoids',
-            'Anconeus',
+            'Abdominals',
           ],
           equipments: [
             'Dumbbell (ดัมเบล)',
@@ -83,14 +84,15 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
-          videoUrl: '',
+          videoUrl: 'assets/workout_vdo/dumbbell_flys.mp4',
           arModelPath: 'assets/workout_ar_model/dumbbell_flys.usdz',
+          reference: 'ข้อมูลจากหนังสือ หนังสือกายวิภาค การออกกำลังกายเเบบฝึกกล้ามเนื้อ หน้า 82',
         ),
         ExerciseModel(
           id: 'shoulder_1',
           bodyPartKey: 'shoulder',
           title: 'Dumbbell Shoulder Press',
-          subtitle: 'ท่าrนั่งยกดัมเบลล์',
+          subtitle: 'ท่านั่งยกดัมเบลล์',
           imagePath: 'assets/workout_img/shoulder/shoulder_1.png',
           description:
               'การฝึกกล้ามเนื้อไหล่ช่วยเพิ่มความแข็งแกร่งและความสมดุลให้กับไหล่ส่วนต่าง ๆ ช่วยให้การเคลื่อนไหวราบรื่น',
@@ -118,6 +120,7 @@ class ExerciseListPage extends StatelessWidget {
           ],
           videoUrl: 'assets/workout_vdo/shoulder_press.mp4',
           arModelPath: 'assets/workout_ar_model/shoulder_press.usdz',
+          reference: 'ข้อมูลจากหนังสือ หนังสือกายวิภาค การออกกำลังกายเเบบฝึกกล้ามเนื้อ หน้า 39',
 
         ),
         ExerciseModel(
@@ -154,8 +157,9 @@ class ExerciseListPage extends StatelessWidget {
             'assets/workout_img/dumbell.png',
             'assets/workout_img/bench.png',
           ],
-          videoUrl: '',
+          videoUrl: 'assets/workout_vdo/dumbbell_row.mp4',
           arModelPath: 'assets/workout_ar_model/dumbbell_row.usdz',
+          reference: 'ข้อมูลจากหนังสือ หนังสือกายวิภาค การออกกำลังกายเเบบฝึกกล้ามเนื้อ หน้า 102',
         ),
         ExerciseModel(
           id: 'back_2',
@@ -188,8 +192,9 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: [
             'assets/workout_img/latpulldown_machine.png'
           ],
-          videoUrl: 'https://www.youtube.com/watch?v=eozdVDA78K0',
+          videoUrl: 'assets/workout_vdo/lat_pulldown.mp4',
           arModelPath: 'assets/workout_ar_model/lat_pulldown.usdz',
+          reference: 'ข้อมูลจากหนังสือ หนังสือกายวิภาค การออกกำลังกายเเบบฝึกกล้ามเนื้อ หน้า 94',
         ),
         ExerciseModel(
           id: 'leg_1',
@@ -221,8 +226,9 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
-          videoUrl: '',
+          videoUrl: 'assets/workout_vdo/dumbbell_squat.mp4',
           arModelPath: 'assets/workout_ar_model/dumbbell_squat.usdz',
+          reference: 'ข้อมูลจากหนังสือ หนังสือกายวิภาค การออกกำลังกายเเบบฝึกกล้ามเนื้อ หน้า 127',
         ),
         ExerciseModel(
           id: 'leg_2',
@@ -250,8 +256,9 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
-          videoUrl: 'https://www.youtube.com/watch?v=QOVaHwm-Q6U',
+          videoUrl: 'assets/workout_vdo/dumbbell_lunges.mp4',
           arModelPath: 'assets/workout_ar_model/dumbbell_lunges.usdz',
+          reference: 'ข้อมูลจากหนังสือ หนังสือกายวิภาค การออกกำลังกายเเบบฝึกกล้ามเนื้อ หน้า 161',
         ),
         ExerciseModel(
           id: 'core_1',
@@ -282,8 +289,9 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
-          videoUrl: 'https://www.youtube.com/watch?v=ZJXj8tqQGgk',
+          videoUrl: 'assets/workout_vdo/side_bend.mp4',
           arModelPath: 'assets/workout_ar_model/dumbbell_side_bends.usdz',
+          reference: 'ข้อมูลจากหนังสือ หนังสือกายวิภาค การออกกำลังกายเเบบฝึกกล้ามเนื้อ หน้า 189',
         ),
         ExerciseModel(
           id: 'arm_1',
@@ -313,8 +321,9 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
-          videoUrl: '',
+          videoUrl: 'assets/workout_vdo/dumbbell_curl.mp4',
           arModelPath: 'assets/workout_ar_model/dumbbell_curl.usdz',
+          reference: 'ข้อมูลจากหนังสือ หนังสือกายวิภาค การออกกำลังกายเเบบฝึกกล้ามเนื้อ หน้า 10',
         ),
         ExerciseModel(
           id: 'arm_2',
@@ -343,8 +352,9 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
-          videoUrl: 'https://www.youtube.com/watch?v=zC3nLlEvin4',
+          videoUrl: 'assets/workout_vdo/hammer_curl.mp4',
           arModelPath: 'assets/workout_ar_model/hammer_curl.usdz',
+          reference: 'ข้อมูลจากหนังสือ หนังสือกายวิภาค การออกกำลังกายเเบบฝึกกล้ามเนื้อ หน้า 13',
         ),
         ExerciseModel(
           id: 'arm_3',
@@ -372,8 +382,9 @@ class ExerciseListPage extends StatelessWidget {
           equipmentImages: [
             'assets/workout_img/dumbell.png'
           ],
-          videoUrl: '',
+          videoUrl: 'assets/workout_vdo/tricep_extension.mp4',
           arModelPath: 'assets/workout_ar_model/seated_dumbbell_triceps_extensions.usdz',
+          reference: 'ข้อมูลจากหนังสือ หนังสือกายวิภาค การออกกำลังกายเเบบฝึกกล้ามเนื้อ หน้า 32',
         ),
       ];
 
